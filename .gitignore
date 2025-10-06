@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+env/
+venv/
+.venv
+
+# Distribution / packaging
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment variables
+.env
+.env.local
+
+# Output files
+output/
+*.log
+test_result.png
+
+# IDE
+.claude/
+.idea/
+.vscode/
+.DS_Store
+
+# Testing
+.mypy_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+*.swp
+*~          
