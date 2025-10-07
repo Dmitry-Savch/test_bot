@@ -1,4 +1,4 @@
-from typing import Tuple, Literal, Union, Optional
+from typing import Tuple, Literal, Union
 from PIL import Image as PILImage
 from PIL import ImageDraw, ImageFont
 
@@ -18,11 +18,10 @@ def _load_font(font_family: str, font_sz: float) -> ImageFont.FreeTypeFont:
 def _text_size(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont) -> Tuple[int, int]:
     """
     Measure text width/height similarly to Wand's metrics.text_width/height.
-    Uses textbbox for precise glyph metrics.
+    Uses textbbox for precise glyph metrics (ink box).
     """
-    # textbbox returns (left, top, right, bottom)
     bbox = draw.textbbox((0, 0), text, font=font)
-    return (bbox[2] - bbox[0], bbox[3] - bbox[1])
+    return (bbox[2] - bbox[0], bbox[3] - bbox[1])  # (width, height)
 
 def _text_length(font: ImageFont.FreeTypeFont, draw: ImageDraw.ImageDraw, text: str) -> float:
     """
@@ -58,15 +57,6 @@ def _draw_text_with_tracking(
         x += int(round(adv + tracking))
 
 
-def _text_size(draw: ImageDraw.ImageDraw, text: str, font: ImageFont.FreeTypeFont) -> Tuple[int, int]:
-    """
-    Measure text width/height similarly to Wand's metrics.text_width/height.
-    Uses textbbox for precise glyph metrics (ink box).
-    """
-    bbox = draw.textbbox((0, 0), text, font=font)
-    return (bbox[2] - bbox[0], bbox[3] - bbox[1])  # (width, height)
-
-
 def execute(
     base_image: PILImage.Image,
     font_sz: float,
@@ -76,9 +66,6 @@ def execute(
     font_family: str = 'fonts/semibold.woff2',
     text_color: Union[Tuple[int,int,int], Tuple[int,int,int,int]] = (55, 55, 55),
     kerning: float = 1.0,
-    y_limit: Optional[int] = None,
-    vertical_bound: Optional[Literal['above','below']] = None,
-    opacity: Optional[int] = 255,
 ) -> PILImage.Image:
     """
     Draw `text` onto `base_image` and return a new Image with the rendering applied.
@@ -91,13 +78,6 @@ def execute(
     # No-op early exit: return unchanged clone if position is (0,0)
     if position[0] == 0 and position[1] == 0:
         return result
-
-    # Vertical bound checks still compare against the provided Y (bottom line)
-    if y_limit is not None and vertical_bound in ('above', 'below'):
-        if vertical_bound == 'above' and position[1] < y_limit:
-            return result
-        elif vertical_bound == 'below' and position[1] > y_limit:
-            return result
 
     needs_alpha = len(text_color) == 4
     if needs_alpha:
@@ -112,7 +92,7 @@ def execute(
     # Normalize color to RGBA
     if len(text_color) == 3:
         r, g, b = text_color
-        fill = (int(r), int(g), int(b), opacity)
+        fill = (int(r), int(g), int(b), 255)
     else:
         raise ValueError("text_color must be (R,G,B)")
 
