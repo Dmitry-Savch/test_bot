@@ -2,7 +2,7 @@
 
 ## Overview
 
-Created 6 withdrawal history screenshot modifiers using the new rendering logic with `text_draw_execute()` from `_text_line_render/text_draw.py`. Clean PIL-based rendering without legacy cv2/matplotlib dependencies.
+Created 3 Bybit withdrawal history screenshot modifiers using the new rendering logic with `text_draw_execute()` from `_text_line_render/text_draw.py`. Clean PIL-based rendering without legacy cv2/matplotlib dependencies.
 
 ## Files Created
 
@@ -23,30 +23,12 @@ Created 6 withdrawal history screenshot modifiers using the new rendering logic 
    - Transactions: 6
    - Currency display: "Bs" (VED → Bs conversion)
 
-### MEXC Modifiers (4 transactions each)
-
-4. **mexc_clp_withdraw_history_modifier.py** + test
-   - Currency: CLP (Chilean Peso)
-   - Transactions: 4
-   - Currency display: "CLP"
-
-5. **mexc_mxn_withdraw_history_modifier.py** + test
-   - Currency: MXN (Mexican Peso)
-   - Transactions: 4
-   - Currency display: "MXN"
-
-6. **mexc_ecu_withdraw_history_modifier.py** + test
-   - Currency: ECU (Ecuadorian)
-   - Transactions: 4
-   - Currency display: "USD" (ECU → USD conversion, MEXC only)
-
 ## Technical Details
 
 ### Preserved from Original
 
 ✅ **Coordinates:**
 - Y positions: `[845, 1010, 1177, 1340, 1504, 1666]` (Bybit - 6 rows)
-- Y positions: `[845, 1010, 1177, 1340]` (MEXC - 4 rows)
 - X positions:
   - Time: `416`
   - Account: `937`
@@ -65,8 +47,7 @@ Created 6 withdrawal history screenshot modifiers using the new rendering logic 
 ✅ **Business Logic:**
 - Add `"****"` to account numbers
 - Currency conversions:
-  - VED → "Bs" (Bybit)
-  - ECU → "USD" (MEXC only)
+  - VED → "Bs"
   - MXN → "MXN" (unchanged)
   - CLP → "CLP" (unchanged)
 
@@ -121,32 +102,11 @@ def render_bybit_XXX_withdraw_history(
 ) -> str:
 ```
 
-### MEXC (4 transactions)
-
-```python
-def render_mexc_XXX_withdraw_history(
-    tran_1: str,           # Transaction 1 amount
-    tran_2: str,           # Transaction 2 amount
-    tran_3: str,           # Transaction 3 amount
-    tran_4: str,           # Transaction 4 amount
-    lead_bank: str,        # Bank name (all rows)
-    lead_number: str,      # Account number (rows 1-3)
-    persa_number: str,     # Account number (row 4)
-    time_in_description: str,  # Time (e.g., "Hace un mes")
-    template_path: str = "templates/...",
-    output_path: str = "output/result.png"
-) -> str:
-```
-
 ## Account Number Logic
 
 ### Bybit (6 transactions):
 - Rows 1-5: Use `lead_number + "****"`
 - Row 6: Use `persa_number + "****"`
-
-### MEXC (4 transactions):
-- Rows 1-3: Use `lead_number + "****"`
-- Row 4: Use `persa_number + "****"`
 
 ## Usage Examples
 
@@ -171,25 +131,6 @@ result = render_bybit_clp_withdraw_history(
 )
 ```
 
-### MEXC MXN Example
-
-```python
-from _modifiers_photo.mexc_mxn_withdraw_history_modifier import render_mexc_mxn_withdraw_history
-
-result = render_mexc_mxn_withdraw_history(
-    tran_1="1,234.56",
-    tran_2="987.65",
-    tran_3="2,345.67",
-    tran_4="456.78",
-    lead_bank="BBVA Bancomer",
-    lead_number="4152888",       # Will display as "4152888****"
-    persa_number="9876543",      # Will display as "9876543****"
-    time_in_description="Hace un mes",
-    template_path="templates/mexc_mxn_withdraw_history.png",
-    output_path="output/mexc_mxn_result.png"
-)
-```
-
 ## Template Requirements
 
 Each modifier requires a corresponding template image:
@@ -198,11 +139,6 @@ Each modifier requires a corresponding template image:
 - `templates/bybit_clp_withdraw_history.png`
 - `templates/bybit_mxn_withdraw_history.png`
 - `templates/bybit_ved_withdraw_history.png`
-
-### MEXC Templates
-- `templates/mexc_clp_withdraw_history.png`
-- `templates/mexc_mxn_withdraw_history.png`
-- `templates/mexc_ecu_withdraw_history.png`
 
 ## Testing
 
@@ -214,9 +150,6 @@ cd _modifiers_photo
 pytest test_bybit_clp_withdraw_history_modifier.py -v
 pytest test_bybit_mxn_withdraw_history_modifier.py -v
 pytest test_bybit_ved_withdraw_history_modifier.py -v
-pytest test_mexc_clp_withdraw_history_modifier.py -v
-pytest test_mexc_mxn_withdraw_history_modifier.py -v
-pytest test_mexc_ecu_withdraw_history_modifier.py -v
 
 # Or test all at once
 pytest test_*_withdraw_history_modifier.py -v
@@ -226,18 +159,17 @@ Tests skip gracefully if template images are not found.
 
 ## Currency Conversion Reference
 
-| Geo | Input Currency | Display Currency | Exchange | Notes |
-|-----|---------------|------------------|----------|-------|
-| CLP | CLP | CLP | Bybit, MEXC | No conversion |
-| MXN | MXN | MXN | Bybit, MEXC | No conversion |
-| VED | VED | Bs | Bybit only | VED → Bs conversion |
-| ECU | ECU | USD | MEXC only | ECU → USD conversion |
+| Geo | Input Currency | Display Currency | Notes |
+|-----|---------------|------------------|-------|
+| CLP | CLP | CLP | No conversion |
+| MXN | MXN | MXN | No conversion |
+| VED | VED | Bs | VED → Bs conversion |
 
 ## File Statistics
 
-**Total files created:** 12
-- **6 modifiers:** 3 Bybit + 3 MEXC
-- **6 test files:** 3 Bybit tests + 3 MEXC tests
+**Total files created:** 6
+- **3 modifiers:** Bybit (CLP, MXN, VED)
+- **3 test files:** Bybit tests
 
 **All files validated:** ✅ Syntax check passed
 
@@ -245,7 +177,6 @@ Tests skip gracefully if template images are not found.
 
 1. **Add template images** to `templates/` directory:
    - 3 Bybit templates (CLP, MXN, VED)
-   - 3 MEXC templates (CLP, MXN, ECU)
 
 2. **Adjust coordinates** if needed based on actual template layouts
 
@@ -261,4 +192,4 @@ Tests skip gracefully if template images are not found.
 **Created:** 2025-10-09
 **Status:** ✅ Complete
 **Rendering:** PIL Image + `text_draw_execute()`
-**Focus:** Bybit & MEXC withdrawal history screenshots
+**Focus:** Bybit withdrawal history screenshots

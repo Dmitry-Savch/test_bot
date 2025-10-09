@@ -12,10 +12,3 @@ class BybitWithdrawStates(StatesGroup):
     waiting_transaction_lead_main = State()
     waiting_transaction_lead_11 = State()
     waiting_total_payout = State()
-
-
-class MEXCWithdrawStates(StatesGroup):
-    """States for MEXC withdrawal screenshot generation."""
-    waiting_amount = State()
-    waiting_currency = State()
-    waiting_address = State()
