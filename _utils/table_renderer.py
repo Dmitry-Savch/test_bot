@@ -170,8 +170,8 @@ def create_bybit_table_config() -> TableConfig:
         font_size=77,  # Scaled for high-res template (70% of ~110px)
         text_color=(255, 255, 255),
         kerning=2.0,  # Adjusted for large text
-        # Y positions for 6 rows (measured from reference screenshot, scaled to 70%)
-        y_positions=[930, 1169, 1407, 1645, 1882, 2121],
+        # Y positions for 6 rows (fine-tuned positioning, ~238px spacing)
+        y_positions=[1288, 1526, 1764, 2001, 2240, 2478],
         columns={
             'time': ColumnConfig(x_position=700, alignment='left'),
             'account': ColumnConfig(x_position=1624, alignment='left'),
