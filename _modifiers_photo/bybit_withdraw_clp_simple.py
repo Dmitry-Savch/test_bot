@@ -21,7 +21,7 @@ def render_bybit_clp_withdraw_history(
     lead_number: str,
     persa_number: str,
     time_in_description: str,
-    template_path: str = "templates/bybit_clp_withdraw_history.png",
+    template_path: str = "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
     output_path: str = "output/result.png"
 ) -> str:
     """

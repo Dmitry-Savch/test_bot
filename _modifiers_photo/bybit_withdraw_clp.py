@@ -17,8 +17,9 @@ def render_bybit_clp_withdraw_history(
     lead_number: str,
     persa_number: str,
     time_in_description: str,
-    template_path: str = "templates/bybit_clp_withdraw_history.png",
-    output_path: str = "output/result.png"
+    template_path: str = "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+    output_path: str = "output/result.png",
+    currency_suffix: str = " CLP"
 ) -> str:
     """
     Render Bybit CLP withdrawal history screenshot with 6 transactions.
@@ -45,8 +46,8 @@ def render_bybit_clp_withdraw_history(
     lead_number_masked = lead_number + "****"
     persa_number_masked = persa_number + "****"
 
-    # Currency suffix for CLP
-    currency = " CLP"
+    # Use provided currency suffix
+    currency = currency_suffix
 
     # Prepare row data
     rows = [

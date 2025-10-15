@@ -23,7 +23,8 @@ def get_currency_keyboard():
     """Create keyboard with currency options."""
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text="CLP"), KeyboardButton(text="MXN"), KeyboardButton(text="VED")]
+            [KeyboardButton(text="MXN"), KeyboardButton(text="ARS")],
+            [KeyboardButton(text="$"), KeyboardButton(text="CLP")]
         ],
         resize_keyboard=True,
         one_time_keyboard=True
@@ -49,9 +50,9 @@ async def process_currency(message: Message, state: FSMContext):
     """Process currency selection (step 1/9)."""
     currency = message.text.strip().upper()
 
-    if currency not in ["CLP", "MXN", "VED"]:
+    if currency not in ["MXN", "ARS", "$", "CLP"]:
         await message.answer(
-            "❌ Невірна валюта. Будь ласка, оберіть: CLP, MXN або VED",
+            "❌ Невірна валюта. Будь ласка, оберіть: MXN, ARS, $ або CLP",
             reply_markup=get_currency_keyboard()
         )
         return
@@ -163,51 +164,51 @@ async def process_total_payout(message: Message, state: FSMContext):
         os.makedirs(config.OUTPUT_DIR, exist_ok=True)
         output_path = os.path.join(config.OUTPUT_DIR, f"bybit_{message.from_user.id}.png")
 
-        # Select the appropriate modifier based on currency
+        # Select the appropriate template and currency suffix based on currency
         currency = data["currency"]
 
-        if currency == "CLP":
-            template_path = "templates/bybit_clp_withdraw_history.png"
-            result_path = render_bybit_clp_withdraw_history(
-                transaction_lead_10=data["transaction_lead_10"],
-                transaction_lead_main=data["transaction_lead_main"],
-                transaction_lead_11=data["transaction_lead_11"],
-                total_payout=data["total_payout"],
-                lead_bank=data["lead_bank"],
-                lead_number=data["lead_number"],
-                persa_number=data["persa_number"],
-                time_in_description=data["time_in_description"],
-                template_path=template_path,
-                output_path=output_path
-            )
-        elif currency == "MXN":
-            template_path = "templates/bybit_mxn_withdraw_history.png"
-            result_path = render_bybit_mxn_withdraw_history(
-                transaction_lead_10=data["transaction_lead_10"],
-                transaction_lead_main=data["transaction_lead_main"],
-                transaction_lead_11=data["transaction_lead_11"],
-                total_payout=data["total_payout"],
-                lead_bank=data["lead_bank"],
-                lead_number=data["lead_number"],
-                persa_number=data["persa_number"],
-                time_in_description=data["time_in_description"],
-                template_path=template_path,
-                output_path=output_path
-            )
-        elif currency == "VED":
-            template_path = "templates/bybit_ved_withdraw_history.png"
-            result_path = render_bybit_ved_withdraw_history(
-                transaction_lead_10=data["transaction_lead_10"],
-                transaction_lead_main=data["transaction_lead_main"],
-                transaction_lead_11=data["transaction_lead_11"],
-                total_payout=data["total_payout"],
-                lead_bank=data["lead_bank"],
-                lead_number=data["lead_number"],
-                persa_number=data["persa_number"],
-                time_in_description=data["time_in_description"],
-                template_path=template_path,
-                output_path=output_path
-            )
+        # Map currency to template and suffix
+        currency_config = {
+            "MXN": {
+                "template": "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                "suffix": " MXN"
+            },
+            "ARS": {
+                "template": "templates/DU_ARS_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                "suffix": " ARS"
+            },
+            "$": {
+                "template": "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",  # Fallback to MXN template
+                "suffix": " $"
+            },
+            "CLP": {
+                "template": "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",  # Fallback to MXN template
+                "suffix": " CLP"
+            }
+        }
+
+        if currency not in currency_config:
+            await message.answer(f"❌ Валюта {currency} не підтримується")
+            await state.clear()
+            return
+
+        curr_config = currency_config[currency]
+        template_path = curr_config["template"]
+
+        # Use universal render function (CLP function works for all currencies)
+        result_path = render_bybit_clp_withdraw_history(
+            transaction_lead_10=data["transaction_lead_10"],
+            transaction_lead_main=data["transaction_lead_main"],
+            transaction_lead_11=data["transaction_lead_11"],
+            total_payout=data["total_payout"],
+            lead_bank=data["lead_bank"],
+            lead_number=data["lead_number"],
+            persa_number=data["persa_number"],
+            time_in_description=data["time_in_description"],
+            template_path=template_path,
+            output_path=output_path,
+            currency_suffix=curr_config["suffix"]
+        )
 
         # Send the generated screenshot
         photo = FSInputFile(result_path)
