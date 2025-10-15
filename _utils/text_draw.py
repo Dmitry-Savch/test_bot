@@ -166,12 +166,13 @@ def draw_text_with_kerning(
     position: Tuple[int, int],
     font_family: str = "fonts/OpenSans-Semibold.ttf",
     text_color: Tuple[int, int, int] = (255, 255, 255),
-    alignment: Literal['left', 'right'] = 'left',
+    alignment: Literal['left', 'right', 'center'] = 'left',
     kerning: float = 1.4
 ) -> PILImage.Image:
     """
     Legacy wrapper for backward compatibility.
     Uses old-style top-based Y positioning (not baseline).
+    Supports left, right, and center alignment.
     """
     # Create overlay for transparency
     overlay = PILImage.new("RGBA", image.size, (0, 0, 0, 0))
@@ -184,12 +185,16 @@ def draw_text_with_kerning(
     r, g, b = text_color
     fill = (r, g, b, 255)
 
-    # Calculate text width for right alignment
+    # Calculate text width with kerning
+    native_adv = _text_length(font, draw, text)
+    extra_tracking = max(0, len(text) - 1) * kerning
+    text_width = int(round(native_adv + extra_tracking))
+
+    # Adjust x position based on alignment
     if alignment == 'right':
-        native_adv = _text_length(font, draw, text)
-        extra_tracking = max(0, len(text) - 1) * kerning
-        text_width = int(round(native_adv + extra_tracking))
         x = x - text_width
+    elif alignment == 'center':
+        x = x - (text_width // 2)
 
     # Draw text with kerning using old top-based positioning
     _draw_text_with_tracking(draw, (x, y), text, font, fill, tracking=kerning)

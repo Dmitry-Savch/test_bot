@@ -16,5 +16,5 @@ Y_POSITIONS = [788, 948, 1108, 1268, 1428, 1588]
 # X positions for columns (horizontal positioning)
 TIEMPO_X = 414         # "Tiempo" column (left aligned)
 NUMERO_CUENTA_X = 940   # "Numero de cuenta" column (left aligned)
-BANCO_X = 1620          # "Banco" column (left aligned)
-MONTO_X = 2270     # "Monto" column (right aligned)
+BANCO_X = 1620 - 65        # "Banco" column (left aligned)
+MONTO_X = 2270 - 70     # "Monto" column (right aligned)

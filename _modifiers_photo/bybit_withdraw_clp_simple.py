@@ -116,7 +116,7 @@ def render_bybit_clp_withdraw_history(
             position=(MONTO_X, y),
             font_family=FONT_FAMILY,
             text_color=TEXT_COLOR,
-            alignment="right",  # Right aligned for amounts
+            alignment="center",  # Center aligned for amounts
             kerning=KERNING
         )
 

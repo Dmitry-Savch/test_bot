@@ -15,7 +15,7 @@ from _utils import bybit_config
 class ColumnConfig:
     """Configuration for a table column."""
     x_position: int
-    alignment: Literal['left', 'right'] = 'left'
+    alignment: Literal['left', 'right', 'center'] = 'left'
 
 
 @dataclass
@@ -129,10 +129,13 @@ class TableRenderer:
                 col_config = self.config.columns[col_name]
 
                 # Calculate x position based on alignment
+                text_width = self._get_text_width(text)
+
                 if col_config.alignment == 'right':
-                    text_width = self._get_text_width(text)
                     x_pos = col_config.x_position - text_width
-                else:
+                elif col_config.alignment == 'center':
+                    x_pos = col_config.x_position - (text_width // 2)
+                else:  # left
                     x_pos = col_config.x_position
 
                 # Draw text (y_pos is the top of the text bounding box)
@@ -173,6 +176,6 @@ def create_bybit_table_config() -> TableConfig:
             'time': ColumnConfig(x_position=bybit_config.TIEMPO_X, alignment='left'),
             'account': ColumnConfig(x_position=bybit_config.NUMERO_CUENTA_X, alignment='left'),
             'bank': ColumnConfig(x_position=bybit_config.BANCO_X, alignment='left'),
-            'amount': ColumnConfig(x_position=bybit_config.MONTO_X, alignment='right'),
+            'amount': ColumnConfig(x_position=bybit_config.MONTO_X, alignment='center'),
         }
     )
