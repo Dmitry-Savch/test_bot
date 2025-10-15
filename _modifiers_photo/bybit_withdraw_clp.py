@@ -38,11 +38,8 @@ def render_bybit_clp_withdraw_history(
     Returns:
         Path to the generated screenshot
     """
-    # Load template and resize FIRST (before rendering text)
+    # Load template (no resizing - use original size)
     base_img = Image.open(template_path).convert("RGBA")
-    width, height = base_img.size
-    new_size = (int(width * 0.7), int(height * 0.7))
-    base_img = base_img.resize(new_size, Image.LANCZOS)
 
     # Add **** to account numbers
     lead_number_masked = lead_number + "****"

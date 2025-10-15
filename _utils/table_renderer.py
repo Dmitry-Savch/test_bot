@@ -8,6 +8,7 @@ from typing import List, Tuple, Literal
 from PIL import Image
 from PIL import ImageDraw, ImageFont
 from dataclasses import dataclass
+from _utils import bybit_config
 
 
 @dataclass
@@ -113,15 +114,12 @@ class TableRenderer:
         r, g, b = self.config.text_color
         fill = (r, g, b, 255)
 
-        # Get font metrics for baseline alignment
-        ascent, descent = self._font.getmetrics()
-
         # Render each row
         for row_idx, row_data in enumerate(rows):
             if row_idx >= len(self.config.y_positions):
                 break
 
-            y_base = self.config.y_positions[row_idx]
+            y_pos = self.config.y_positions[row_idx]
 
             # Render each column in the row
             for col_name, text in row_data.items():
@@ -137,10 +135,7 @@ class TableRenderer:
                 else:
                     x_pos = col_config.x_position
 
-                # Y position using baseline alignment
-                y_pos = y_base - ascent
-
-                # Draw text
+                # Draw text (y_pos is the top of the text bounding box)
                 self._draw_text_with_kerning(
                     draw,
                     (x_pos, y_pos),
@@ -157,25 +152,27 @@ def create_bybit_table_config() -> TableConfig:
     """
     Create standard Bybit withdrawal history table configuration.
 
-    Coordinates are calibrated for 70% scaled template.
+    Uses shared configuration from bybit_config.py to ensure consistency
+    across all rendering methods.
+
+    Coordinates are calibrated for 50% scaled template.
     Original template size: 6720 x 4200 px
-    After 70% resize: 4704 x 2940 px
+    After 50% resize: 3360 x 2100 px
     Images are resized BEFORE text rendering for accurate positioning.
 
     Returns:
         TableConfig for Bybit tables
     """
     return TableConfig(
-        font_family="fonts/OpenSans-Semibold.ttf",
-        font_size=77,  # Scaled for high-res template (70% of ~110px)
-        text_color=(255, 255, 255),
-        kerning=2.0,  # Adjusted for large text
-        # Y positions for 6 rows (fine-tuned positioning, ~238px spacing)
-        y_positions=[1288, 1526, 1764, 2001, 2240, 2478],
+        font_family=bybit_config.FONT_FAMILY,
+        font_size=bybit_config.FONT_SIZE,
+        text_color=bybit_config.TEXT_COLOR,
+        kerning=bybit_config.KERNING,
+        y_positions=bybit_config.Y_POSITIONS,
         columns={
-            'time': ColumnConfig(x_position=700, alignment='left'),
-            'account': ColumnConfig(x_position=1624, alignment='left'),
-            'bank': ColumnConfig(x_position=2674, alignment='left'),
-            'amount': ColumnConfig(x_position=3850, alignment='right'),
+            'time': ColumnConfig(x_position=bybit_config.TIEMPO_X, alignment='left'),
+            'account': ColumnConfig(x_position=bybit_config.NUMERO_CUENTA_X, alignment='left'),
+            'bank': ColumnConfig(x_position=bybit_config.BANCO_X, alignment='left'),
+            'amount': ColumnConfig(x_position=bybit_config.MONTO_X, alignment='right'),
         }
     )
