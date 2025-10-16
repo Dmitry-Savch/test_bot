@@ -5,6 +5,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 from _bot.handlers_global import router as global_router
 from _bot.handlers_bybit import router as bybit_router
+from _bot.handlers_bybit_fd import router as bybit_fd_router
 import config
 
 logging.basicConfig(level=logging.INFO)
@@ -17,6 +18,7 @@ async def main():
     # Include all routers
     dp.include_router(global_router)
     dp.include_router(bybit_router)
+    dp.include_router(bybit_fd_router)
 
     await dp.start_polling(bot)
 

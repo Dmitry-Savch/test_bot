@@ -5,6 +5,7 @@ def get_main_selection_keyboard() -> InlineKeyboardMarkup:
     """Main keyboard with all screenshot type options (for /kb command)."""
     keyboard = [
         [InlineKeyboardButton(text="🏦 Bybit Withdraw", callback_data="select_bybit")],
+        [InlineKeyboardButton(text="✅ Bybit FD (Successful)", callback_data="select_bybit_fd")],
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 
