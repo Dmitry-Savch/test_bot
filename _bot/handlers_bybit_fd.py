@@ -35,6 +35,54 @@ def get_currency_keyboard():
 async def select_bybit_fd(callback: CallbackQuery, state: FSMContext):
     """Handle Bybit FD selection from main menu."""
     await callback.answer()
+
+    # TEST MODE: Auto-fill all data and generate screenshot
+    if config.TEST_MODE:
+        await callback.message.answer("🧪 <b>TEST MODE АКТИВНИЙ</b>\nАвтоматичне заповнення даних...", parse_mode="HTML")
+
+        # Fill all test data
+        await state.update_data(**config.BYBIT_FD_TEST_DATA)
+
+        # Generate screenshot immediately
+        await callback.message.answer("⏳ Генерую скріншот з 11 рядками × 6 колонками...")
+
+        try:
+            data = await state.get_data()
+            os.makedirs(config.OUTPUT_DIR, exist_ok=True)
+            output_path = os.path.join(config.OUTPUT_DIR, f"bybit_fd_{callback.from_user.id}.png")
+
+            result_path = render_bybit_fd_successful(
+                currency=data["currency"],
+                bank=data["bank"],
+                time_in_description=data["time_in_description"],
+                status=data["status"],
+                lead_payment_amount=data["lead_payment_amount"],
+                acter_payment_1=data["acter_payment_1"],
+                acter_payment_2=data["acter_payment_2"],
+                lead_account_number=data["lead_account_number"],
+                acter_account_1=data["acter_account_1"],
+                acter_account_2=data["acter_account_2"],
+                template_path="templates/successful.png",
+                output_path=output_path
+            )
+
+            photo = FSInputFile(result_path)
+            await callback.message.answer_photo(
+                photo,
+                caption="✅ Скріншот Bybit FD (Successful) готовий! (TEST MODE)\n"
+                        "11 рядків × 6 колонок заповнено.",
+                reply_markup=get_continue_keyboard()
+            )
+
+            await state.clear()
+            return
+
+        except Exception as e:
+            await callback.message.answer(f"❌ Помилка при створенні скріншоту: {str(e)}")
+            await state.clear()
+            return
+
+    # NORMAL MODE: Original logic
     await callback.message.answer(
         "🏦 <b>Bybit FD - Successful Transaction</b>\n\n"
         "Структура: 11 рядків × 6 колонок\n"

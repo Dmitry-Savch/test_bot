@@ -86,7 +86,7 @@ def execute(
     font_sz: float,
     text: str,
     position: Point,
-    alignment: Literal['left', 'right'] = 'left',
+    alignment: Literal['left', 'right', 'center'] = 'left',
     font_family: str = 'fonts/semibold.woff2',
     text_color: Union[Tuple[int,int,int], Tuple[int,int,int,int]] = (55, 55, 55),
     kerning: float = 1.0,
@@ -97,6 +97,12 @@ def execute(
     """
     Draw `text` onto `base_image` and return a new Image with the rendering applied.
     The input `base_image` is not modified.
+
+    Args:
+        alignment: Text alignment - 'left', 'right', or 'center'
+                  - 'left': position is left edge of text
+                  - 'right': position is right edge of text
+                  - 'center': position is center of text
 
     NOTE: `position[1]` is treated as the **bottom** of the text's ink box.
     """
@@ -138,10 +144,12 @@ def execute(
     extra_tracking = max(0, len(text) - 1) * float(kerning or 0.0)
     text_w = int(round(native_adv + extra_tracking))
 
-    # X position (right-align uses advance width)
+    # X position based on alignment
     if alignment.lower() == 'right':
         x_pos = req_x - text_w
-    else:
+    elif alignment.lower() == 'center':
+        x_pos = req_x - (text_w // 2)
+    else:  # left
         x_pos = req_x
 
     # --- baseline alignment like Wand ---

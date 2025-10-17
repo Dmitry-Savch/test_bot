@@ -34,6 +34,75 @@ def get_currency_keyboard():
 async def select_bybit_withdraw(callback: CallbackQuery, state: FSMContext):
     """Handle Bybit withdrawal history selection from main menu."""
     await callback.answer()
+
+    # TEST MODE: Auto-fill all data and generate screenshot
+    if config.TEST_MODE:
+        await callback.message.answer("🧪 <b>TEST MODE АКТИВНИЙ</b>\nАвтоматичне заповнення даних...", parse_mode="HTML")
+
+        # Fill all test data
+        await state.update_data(**config.BYBIT_TEST_DATA)
+
+        # Generate screenshot immediately
+        await callback.message.answer("⏳ Генерую скріншот...")
+
+        try:
+            data = await state.get_data()
+            os.makedirs(config.OUTPUT_DIR, exist_ok=True)
+            output_path = os.path.join(config.OUTPUT_DIR, f"bybit_{callback.from_user.id}.png")
+
+            currency = data["currency"]
+            currency_config = {
+                "MXN": {
+                    "template": "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                    "suffix": " MXN"
+                },
+                "ARS": {
+                    "template": "templates/DU_ARS_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                    "suffix": " ARS"
+                },
+                "$": {
+                    "template": "templates/SH_USD_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                    "suffix": " $"
+                },
+                "CLP": {
+                    "template": "templates/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                    "suffix": " CLP"
+                }
+            }
+
+            curr_config = currency_config[currency]
+            template_path = curr_config["template"]
+
+            result_path = render_bybit_withdraw_history(
+                transaction_lead_10=data["transaction_lead_10"],
+                transaction_lead_main=data["transaction_lead_main"],
+                transaction_lead_11=data["transaction_lead_11"],
+                total_payout=data["total_payout"],
+                lead_bank=data["lead_bank"],
+                lead_number=data["lead_number"],
+                persa_number=data["persa_number"],
+                time_in_description=data["time_in_description"],
+                currency=curr_config["suffix"],
+                template_path=template_path,
+                output_path=output_path
+            )
+
+            photo = FSInputFile(result_path)
+            await callback.message.answer_photo(
+                photo,
+                caption="✅ Скріншот історії виведення Bybit готовий! (TEST MODE)",
+                reply_markup=get_continue_keyboard()
+            )
+
+            await state.clear()
+            return
+
+        except Exception as e:
+            await callback.message.answer(f"❌ Помилка при створенні скріншоту: {str(e)}")
+            await state.clear()
+            return
+
+    # NORMAL MODE: Original logic
     await callback.message.answer(
         "🏦 <b>Bybit - Історія транзакцій</b>\n\n"
         "Оберіть валюту:",
