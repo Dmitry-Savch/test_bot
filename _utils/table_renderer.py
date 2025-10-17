@@ -137,11 +137,11 @@ def create_bybit_fd_table_config() -> TableConfig:
         kerning=bybit_fd_config.KERNING,
         y_positions=bybit_fd_config.Y_POSITIONS,
         columns={
-            'currency': ColumnConfig(x_position=bybit_fd_config.MONEDA_X, alignment='left'),
-            'bank': ColumnConfig(x_position=bybit_fd_config.BANCO_X, alignment='left'),
-            'time': ColumnConfig(x_position=bybit_fd_config.TIEMPO_X, alignment='left'),
-            'status': ColumnConfig(x_position=bybit_fd_config.ESTADO_X, alignment='left'),
-            'amount': ColumnConfig(x_position=bybit_fd_config.MONTO_X, alignment='left'),
-            'account': ColumnConfig(x_position=bybit_fd_config.NUMERO_CUENTA_X, alignment='left'),
+            'currency': ColumnConfig(x_position=bybit_fd_config.MONEDA_X, alignment='center'),
+            'bank': ColumnConfig(x_position=bybit_fd_config.BANCO_X, alignment='center'),
+            'time': ColumnConfig(x_position=bybit_fd_config.TIEMPO_X, alignment='center'),
+            'status': ColumnConfig(x_position=bybit_fd_config.ESTADO_X, alignment='center'),
+            'amount': ColumnConfig(x_position=bybit_fd_config.MONTO_X, alignment='center'),
+            'account': ColumnConfig(x_position=bybit_fd_config.NUMERO_CUENTA_X, alignment='center'),
         }
     )

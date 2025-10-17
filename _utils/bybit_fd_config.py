@@ -7,7 +7,7 @@ This is for the "successful.png" template.
 
 # Font settings
 FONT_FAMILY = "fonts/OpenSans-Semibold.ttf"
-FONT_SIZE = 50  # Reduced font size for better fit
+FONT_SIZE = 38  # Reduced font size for better fit
 TEXT_COLOR = (0, 0, 0)  # Black text
 KERNING = 0.8  # Tighter letter spacing
 
@@ -38,9 +38,9 @@ Y_POSITIONS = [
 MONEDA_X = 680                    # "Moneda" (Currency) column (80 + 600)
 BANCO_X = 860                     # "Banco" (Bank) column (260 + 600)
 TIEMPO_X = 1080                   # "Tiempo" column (480 + 600)
-ESTADO_X = 1350                   # "Estado" column (750 + 600)
-MONTO_X = 1600                    # "Monto" column (1000 + 600)
-NUMERO_CUENTA_X = 1950            # "Numero de cuenta" column (1350 + 600)
+ESTADO_X = 1350                   # "Estado" column (750 + 600) - колонка 4
+MONTO_X = 1800                    # "Monto" column (1000 + 600 + 200) - колонка 5, збільшено відступ на +200
+NUMERO_CUENTA_X = 2150            # "Numero de cuenta" column (1350 + 600 + 200) - колонка 6, зсунуто на +200
 
 # Note: Rows 10 and 11 (Y_POSITIONS[9] and Y_POSITIONS[10]) are used for bottom data
 # They use the same columns as rows 1-9, just with different data sources
