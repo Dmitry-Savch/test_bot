@@ -179,3 +179,32 @@ def create_bybit_table_config() -> TableConfig:
             'amount': ColumnConfig(x_position=bybit_config.MONTO_X, alignment='center'),
         }
     )
+
+
+def create_bybit_fd_table_config() -> TableConfig:
+    """
+    Create Bybit FD (Successful) table configuration.
+
+    Uses shared configuration from bybit_fd_config.py to ensure consistency.
+    Template size: 3840 x 2712 px
+
+    Returns:
+        TableConfig for Bybit FD tables
+    """
+    from _utils import bybit_fd_config
+
+    return TableConfig(
+        font_family=bybit_fd_config.FONT_FAMILY,
+        font_size=bybit_fd_config.FONT_SIZE,
+        text_color=bybit_fd_config.TEXT_COLOR,
+        kerning=bybit_fd_config.KERNING,
+        y_positions=bybit_fd_config.Y_POSITIONS,
+        columns={
+            'currency': ColumnConfig(x_position=bybit_fd_config.MONEDA_X, alignment='left'),
+            'bank': ColumnConfig(x_position=bybit_fd_config.BANCO_X, alignment='left'),
+            'time': ColumnConfig(x_position=bybit_fd_config.TIEMPO_X, alignment='left'),
+            'status': ColumnConfig(x_position=bybit_fd_config.ESTADO_X, alignment='left'),
+            'amount': ColumnConfig(x_position=bybit_fd_config.MONTO_X, alignment='left'),
+            'account': ColumnConfig(x_position=bybit_fd_config.NUMERO_CUENTA_X, alignment='left'),
+        }
+    )

@@ -1,14 +1,14 @@
 """
-Bybit CLP Withdraw History Screenshot Generator
+Bybit Withdraw History Screenshot Generator
 
-Generates withdrawal history screenshots for Bybit with CLP (Chilean Peso) currency.
+Unified generator for withdrawal history screenshots across all currencies.
 Uses optimized TableRenderer for clean and efficient rendering.
 """
 from PIL import Image
 from _utils.table_renderer import TableRenderer, create_bybit_table_config
 
 
-def render_bybit_clp_withdraw_history(
+def render_bybit_withdraw_history(
     transaction_lead_10: str,
     transaction_lead_main: str,
     transaction_lead_11: str,
@@ -17,12 +17,15 @@ def render_bybit_clp_withdraw_history(
     lead_number: str,
     persa_number: str,
     time_in_description: str,
-    template_path: str = "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
-    output_path: str = "output/result.png",
-    currency_suffix: str = " CLP"
+    currency: str,
+    template_path: str,
+    output_path: str = "output/result.png"
 ) -> str:
     """
-    Render Bybit CLP withdrawal history screenshot with 6 transactions.
+    Render Bybit withdrawal history screenshot with 6 transactions.
+
+    This is a unified function that works with any currency and template.
+    It replaces the separate functions for MXN, VED, and CLP.
 
     Args:
         transaction_lead_10: Transaction Lead 10 amount (appears in rows 1 and 3)
@@ -33,21 +36,29 @@ def render_bybit_clp_withdraw_history(
         lead_number: Lead account number without **** (used for rows 1-5)
         persa_number: Persa account number without **** (used for row 6)
         time_in_description: Transaction time (e.g., "Hace un mes")
+        currency: Currency suffix to append to amounts (e.g., " MXN", " Bs", " CLP")
         template_path: Path to template image
         output_path: Path to save result
 
     Returns:
         Path to the generated screenshot
+
+    Examples:
+        # For MXN
+        render_bybit_withdraw_history(..., currency=" MXN", template_path="templates/mxn.png")
+
+        # For VED (Venezuelan Bolívar)
+        render_bybit_withdraw_history(..., currency=" Bs", template_path="templates/ved.png")
+
+        # For CLP
+        render_bybit_withdraw_history(..., currency=" CLP", template_path="templates/clp.png")
     """
     # Load template (no resizing - use original size)
     base_img = Image.open(template_path).convert("RGBA")
 
     # Add **** to account numbers
-    lead_number_masked = lead_number + "****"
-    persa_number_masked = persa_number + "****"
-
-    # Use provided currency suffix
-    currency = currency_suffix
+    lead_number_masked = f"{lead_number}****"
+    persa_number_masked = f"{persa_number}****"
 
     # Prepare row data
     rows = [
@@ -56,42 +67,42 @@ def render_bybit_clp_withdraw_history(
             'time': time_in_description,
             'account': lead_number_masked,
             'bank': lead_bank,
-            'amount': transaction_lead_10 + currency,
+            'amount': f"{transaction_lead_10}{currency}",
         },
         # Row 2
         {
             'time': time_in_description,
             'account': lead_number_masked,
             'bank': lead_bank,
-            'amount': transaction_lead_main + currency,
+            'amount': f"{transaction_lead_main}{currency}",
         },
         # Row 3
         {
             'time': time_in_description,
             'account': lead_number_masked,
             'bank': lead_bank,
-            'amount': transaction_lead_10 + currency,
+            'amount': f"{transaction_lead_10}{currency}",
         },
         # Row 4
         {
             'time': time_in_description,
             'account': lead_number_masked,
             'bank': lead_bank,
-            'amount': transaction_lead_main + currency,
+            'amount': f"{transaction_lead_main}{currency}",
         },
         # Row 5
         {
             'time': time_in_description,
             'account': lead_number_masked,
             'bank': lead_bank,
-            'amount': transaction_lead_11 + currency,
+            'amount': f"{transaction_lead_11}{currency}",
         },
         # Row 6
         {
             'time': time_in_description,
             'account': persa_number_masked,
             'bank': lead_bank,
-            'amount': total_payout + currency,
+            'amount': f"{total_payout}{currency}",
         },
     ]
 
@@ -100,7 +111,7 @@ def render_bybit_clp_withdraw_history(
     renderer = TableRenderer(config)
     result_img = renderer.render_table(base_img, rows)
 
-    # Save (already resized)
+    # Save result
     result_img.convert("RGB").save(output_path, quality=85, optimize=True)
 
     return output_path

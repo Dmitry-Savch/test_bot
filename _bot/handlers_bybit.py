@@ -11,9 +11,7 @@ from aiogram.fsm.context import FSMContext
 
 from _bot.keyboards import get_continue_keyboard
 from _bot.states import BybitWithdrawStates
-from _modifiers_photo.bybit_withdraw_clp import render_bybit_clp_withdraw_history
-from _modifiers_photo.bybit_withdraw_mxn import render_bybit_mxn_withdraw_history
-from _modifiers_photo.bybit_withdraw_ved import render_bybit_ved_withdraw_history
+from _modifiers_photo.bybit_withdraw import render_bybit_withdraw_history
 import config
 
 router = Router()
@@ -178,11 +176,11 @@ async def process_total_payout(message: Message, state: FSMContext):
                 "suffix": " ARS"
             },
             "$": {
-                "template": "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",  # Fallback to MXN template
+                "template": "templates/SH_USD_BLACK_BYBIT_WITHDRAW_HISTORY.png",
                 "suffix": " $"
             },
             "CLP": {
-                "template": "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",  # Fallback to MXN template
+                "template": "templates/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png",
                 "suffix": " CLP"
             }
         }
@@ -195,8 +193,8 @@ async def process_total_payout(message: Message, state: FSMContext):
         curr_config = currency_config[currency]
         template_path = curr_config["template"]
 
-        # Use universal render function (CLP function works for all currencies)
-        result_path = render_bybit_clp_withdraw_history(
+        # Use unified render function
+        result_path = render_bybit_withdraw_history(
             transaction_lead_10=data["transaction_lead_10"],
             transaction_lead_main=data["transaction_lead_main"],
             transaction_lead_11=data["transaction_lead_11"],
@@ -205,9 +203,9 @@ async def process_total_payout(message: Message, state: FSMContext):
             lead_number=data["lead_number"],
             persa_number=data["persa_number"],
             time_in_description=data["time_in_description"],
+            currency=curr_config["suffix"],
             template_path=template_path,
-            output_path=output_path,
-            currency_suffix=curr_config["suffix"]
+            output_path=output_path
         )
 
         # Send the generated screenshot
