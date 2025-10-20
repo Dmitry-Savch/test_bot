@@ -6,6 +6,7 @@ def get_main_selection_keyboard() -> InlineKeyboardMarkup:
     keyboard = [
         [InlineKeyboardButton(text="🏦 Bybit Withdraw", callback_data="select_bybit")],
         [InlineKeyboardButton(text="✅ Bybit FD (Successful)", callback_data="select_bybit_fd")],
+        [InlineKeyboardButton(text="💱 MEXC FD", callback_data="select_mexc_fd")],
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
 

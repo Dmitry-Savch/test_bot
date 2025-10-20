@@ -16,6 +16,7 @@ import numpy as np
 from PIL import Image
 from typing import List, Tuple, Dict
 
+
 class CoordinateMeasurer:
     def __init__(self, template_path: str):
         self.template_path = template_path
@@ -53,18 +54,20 @@ class CoordinateMeasurer:
             # Show coordinates
             text = f"X: {x}, Y: {y}"
             cv2.putText(display, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
-                       1, (0, 255, 0), 2)
+                        1, (0, 255, 0), 2)
 
         # Show collected points
         for idx, y_pos in enumerate(self.y_positions):
-            cv2.line(display, (0, y_pos), (self.img_width, y_pos), (255, 0, 0), 1)
+            cv2.line(display, (0, y_pos),
+                     (self.img_width, y_pos), (255, 0, 0), 1)
             cv2.putText(display, f"Row {idx+1}", (10, y_pos-5),
-                       cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
 
         for col_name, x_pos in self.column_x.items():
-            cv2.line(display, (x_pos, 0), (x_pos, self.img_height), (0, 0, 255), 1)
+            cv2.line(display, (x_pos, 0),
+                     (x_pos, self.img_height), (0, 0, 255), 1)
             cv2.putText(display, col_name, (x_pos+5, 30),
-                       cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
 
         cv2.imshow(self.window_name, display)
 
@@ -187,17 +190,23 @@ class CoordinateMeasurer:
 
             if in_x_positions:
                 if 'MONEDA_X' in line:
-                    new_lines.append(f'MONEDA_X = {self.column_x.get("MONEDA_X", 680)}                    # "Moneda" (Currency) column\n')
+                    new_lines.append(
+                        f'MONEDA_X = {self.column_x.get("MONEDA_X", 680)}                    # "Moneda" (Currency) column\n')
                 elif 'BANCO_X' in line:
-                    new_lines.append(f'BANCO_X = {self.column_x.get("BANCO_X", 860)}                     # "Banco" (Bank) column\n')
+                    new_lines.append(
+                        f'BANCO_X = {self.column_x.get("BANCO_X", 860)}                     # "Banco" (Bank) column\n')
                 elif 'TIEMPO_X' in line:
-                    new_lines.append(f'TIEMPO_X = {self.column_x.get("TIEMPO_X", 1080)}                   # "Tiempo" column\n')
+                    new_lines.append(
+                        f'TIEMPO_X = {self.column_x.get("TIEMPO_X", 1080)}                   # "Tiempo" column\n')
                 elif 'ESTADO_X' in line:
-                    new_lines.append(f'ESTADO_X = {self.column_x.get("ESTADO_X", 1350)}                   # "Estado" column\n')
+                    new_lines.append(
+                        f'ESTADO_X = {self.column_x.get("ESTADO_X", 1350)}                   # "Estado" column\n')
                 elif 'MONTO_X' in line:
-                    new_lines.append(f'MONTO_X = {self.column_x.get("MONTO_X", 1800)}                    # "Monto" column\n')
+                    new_lines.append(
+                        f'MONTO_X = {self.column_x.get("MONTO_X", 1800)}                    # "Monto" column\n')
                 elif 'NUMERO_CUENTA_X' in line:
-                    new_lines.append(f'NUMERO_CUENTA_X = {self.column_x.get("NUMERO_CUENTA_X", 2150)}            # "Numero de cuenta" column\n')
+                    new_lines.append(
+                        f'NUMERO_CUENTA_X = {self.column_x.get("NUMERO_CUENTA_X", 2150)}            # "Numero de cuenta" column\n')
                     in_x_positions = False
                 else:
                     new_lines.append(line)
@@ -239,7 +248,8 @@ class CoordinateMeasurer:
 
         # Ask to save
         print("\n" + "=" * 60)
-        response = input("\n💾 Зберегти координати у bybit_fd_config.py? (y/n): ")
+        response = input(
+            "\n💾 Зберегти координати у bybit_fd_config.py? (y/n): ")
         if response.lower() == 'y':
             self.save_to_config()
             print("\n✅ Готово! Координати оновлено.")
@@ -250,7 +260,7 @@ class CoordinateMeasurer:
 
 
 def main():
-    template_path = "templates/Group 1312320191.png"
+    template_path = "templates/successful.png"
 
     try:
         measurer = CoordinateMeasurer(template_path)

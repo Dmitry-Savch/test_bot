@@ -149,3 +149,34 @@ def create_bybit_fd_table_config() -> TableConfig:
             'account': ColumnConfig(x_position=bybit_fd_config.NUMERO_CUENTA_X, alignment='center'),
         }
     )
+
+
+def create_mexc_fd_table_config() -> TableConfig:
+    """
+    Create MEXC FD table configuration.
+
+    Uses shared configuration from mexc_fd_config.py to ensure consistency.
+    Template size: 3840 x 2880 px
+
+    Note: "Estado" (Status) column is already on template, so we don't draw it.
+    We only draw 5 columns: currency, bank, time, fee, address.
+
+    Returns:
+        TableConfig for MEXC FD tables
+    """
+    from _utils import mexc_fd_config
+
+    return TableConfig(
+        font_family=mexc_fd_config.FONT_FAMILY,
+        font_size=mexc_fd_config.FONT_SIZE,
+        text_color=mexc_fd_config.TEXT_COLOR,
+        kerning=mexc_fd_config.KERNING,
+        y_positions=mexc_fd_config.Y_POSITIONS,
+        columns={
+            'currency': ColumnConfig(x_position=mexc_fd_config.CRIPTO_X, alignment='center'),
+            'bank': ColumnConfig(x_position=mexc_fd_config.BANCO_X, alignment='center'),
+            'time': ColumnConfig(x_position=mexc_fd_config.TIEMPO_X, alignment='center'),
+            'fee': ColumnConfig(x_position=mexc_fd_config.MONTO_X, alignment='center'),
+            'address': ColumnConfig(x_position=mexc_fd_config.DIRECCION_X, alignment='center'),
+        }
+    )

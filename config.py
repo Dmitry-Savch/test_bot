@@ -39,3 +39,18 @@ BYBIT_FD_TEST_DATA = {
     "acter_account_1": "1509208",
     "acter_account_2": "1509208"
 }
+
+# Test data for MEXC FD
+MEXC_FD_TEST_DATA = {
+    "currency": "ARS",
+    "lead_bank": "Banco Galicia",
+    "acter_bank": "Banco Santander",
+    "lead_time": "Hace 2 días",
+    "acter_time": "Hace 1 día",
+    "fee_1": "500.00",      # Rows 1, 3, 5
+    "fee_2": "750.00",      # Rows 2, 8
+    "fee_3": "1000.00",     # Rows 4, 6, 7, 9
+    "fee_4": "1250.00",     # Row 10
+    "lead_address": "3001382195******",
+    "acter_address": "3001234567******"
+}
