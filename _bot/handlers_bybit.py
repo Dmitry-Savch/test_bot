@@ -48,7 +48,6 @@ async def select_bybit_withdraw(callback: CallbackQuery, state: FSMContext):
         try:
             data = await state.get_data()
             os.makedirs(config.OUTPUT_DIR, exist_ok=True)
-            output_path = os.path.join(config.OUTPUT_DIR, f"bybit_{callback.from_user.id}.png")
 
             currency = data["currency"]
             currency_config = {
@@ -83,8 +82,7 @@ async def select_bybit_withdraw(callback: CallbackQuery, state: FSMContext):
                 persa_number=data["persa_number"],
                 time_in_description=data["time_in_description"],
                 currency=curr_config["suffix"],
-                template_path=template_path,
-                output_path=output_path
+                template_path=template_path
             )
 
             photo = FSInputFile(result_path)
@@ -229,7 +227,6 @@ async def process_total_payout(message: Message, state: FSMContext):
 
         # Create output directory
         os.makedirs(config.OUTPUT_DIR, exist_ok=True)
-        output_path = os.path.join(config.OUTPUT_DIR, f"bybit_{message.from_user.id}.png")
 
         # Select the appropriate template and currency suffix based on currency
         currency = data["currency"]
@@ -273,8 +270,7 @@ async def process_total_payout(message: Message, state: FSMContext):
             persa_number=data["persa_number"],
             time_in_description=data["time_in_description"],
             currency=curr_config["suffix"],
-            template_path=template_path,
-            output_path=output_path
+            template_path=template_path
         )
 
         # Send the generated screenshot

@@ -4,6 +4,7 @@ Bybit Withdraw History Screenshot Generator
 Unified generator for withdrawal history screenshots across all currencies.
 Uses optimized TableRenderer for clean and efficient rendering.
 """
+import os
 from PIL import Image
 from _utils.table_renderer import TableRenderer, create_bybit_table_config
 
@@ -19,7 +20,7 @@ def render_bybit_withdraw_history(
     time_in_description: str,
     currency: str,
     template_path: str,
-    output_path: str = "output/result.png"
+    output_path: str = None
 ) -> str:
     """
     Render Bybit withdrawal history screenshot with 6 transactions.
@@ -45,14 +46,19 @@ def render_bybit_withdraw_history(
 
     Examples:
         # For MXN
-        render_bybit_withdraw_history(..., currency=" MXN", template_path="templates/mxn.png")
-
-        # For VED (Venezuelan Bolívar)
-        render_bybit_withdraw_history(..., currency=" Bs", template_path="templates/ved.png")
+        render_bybit_withdraw_history(..., currency=" MXN", template_path="templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png")
+        # Output: output/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY_RESULT.png
 
         # For CLP
-        render_bybit_withdraw_history(..., currency=" CLP", template_path="templates/clp.png")
+        render_bybit_withdraw_history(..., currency=" CLP", template_path="templates/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png")
+        # Output: output/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY_RESULT.png
     """
+    # Generate output path from template path if not provided
+    if output_path is None:
+        # Extract template filename without extension
+        template_filename = os.path.splitext(os.path.basename(template_path))[0]
+        output_path = f"output/{template_filename}_RESULT.png"
+
     # Load template (no resizing - use original size)
     base_img = Image.open(template_path).convert("RGBA")
 

@@ -17,6 +17,7 @@ class ColumnConfig:
     """Configuration for a table column."""
     x_position: int
     alignment: Literal['left', 'right', 'center'] = 'left'
+    text_color: Tuple[int, int, int] | None = None  # Optional color override for this column
 
 
 @dataclass
@@ -73,6 +74,9 @@ class TableRenderer:
 
                 col_config = self.config.columns[col_name]
 
+                # Use column-specific color if provided, otherwise use default table color
+                text_color = col_config.text_color if col_config.text_color is not None else self.config.text_color
+
                 # Use text_draw.execute to render text with proper alignment
                 result = text_draw.execute(
                     base_image=result,
@@ -81,7 +85,7 @@ class TableRenderer:
                     position=(col_config.x_position, y_pos),
                     alignment=col_config.alignment,
                     font_family=self.config.font_family,
-                    text_color=self.config.text_color,
+                    text_color=text_color,
                     kerning=self.config.kerning
                 )
 
@@ -140,7 +144,7 @@ def create_bybit_fd_table_config() -> TableConfig:
             'currency': ColumnConfig(x_position=bybit_fd_config.MONEDA_X, alignment='center'),
             'bank': ColumnConfig(x_position=bybit_fd_config.BANCO_X, alignment='center'),
             'time': ColumnConfig(x_position=bybit_fd_config.TIEMPO_X, alignment='center'),
-            'status': ColumnConfig(x_position=bybit_fd_config.ESTADO_X, alignment='center'),
+            'status': ColumnConfig(x_position=bybit_fd_config.ESTADO_X, alignment='center', text_color=bybit_fd_config.STATUS_COLOR),
             'amount': ColumnConfig(x_position=bybit_fd_config.MONTO_X, alignment='center'),
             'account': ColumnConfig(x_position=bybit_fd_config.NUMERO_CUENTA_X, alignment='center'),
         }
