@@ -5,8 +5,42 @@ Generates successful transaction screenshots for Bybit FD.
 Uses the "successful.png" template with 11 transaction rows plus additional bottom fields.
 Uses optimized TableRenderer for clean and efficient rendering.
 """
+import random
 from PIL import Image
 from _utils.table_renderer import TableRenderer, create_bybit_fd_table_config
+
+
+# Базові значення для рандомізації сум у перших 9 рядках
+BASE_AMOUNTS = [
+    489000,      # Row 1
+    1200000,     # Row 2
+    489000,      # Row 3
+    5210530,     # Row 4
+    489000,      # Row 5
+    5210530,     # Row 6
+    1200000,     # Row 7
+    5210530,     # Row 8
+    1150000,     # Row 9
+]
+
+
+def generate_randomized_amount(base_amount: int, variation: int = 1000) -> str:
+    """
+    Генерує рандомізовану суму на основі базового значення.
+
+    Args:
+        base_amount: Базове значення суми
+        variation: Максимальна варіація (±variation)
+
+    Returns:
+        Відформатована сума з крапками як роздільниками тисяч
+    """
+    # Генеруємо рандомне відхилення від -variation до +variation
+    random_offset = random.randint(-variation, variation)
+    new_amount = base_amount + random_offset
+
+    # Форматуємо з крапками як роздільниками тисяч
+    return f"{new_amount:,}".replace(",", ".")
 
 
 def render_bybit_fd_successful(
@@ -60,88 +94,22 @@ def render_bybit_fd_successful(
     acter_account_2_masked = f"{acter_account_2}*****"
 
     # Prepare row data - 11 rows with 6 columns each
-    rows = [
-        # Row 1
-        {
+    # Rows 1-9: Use randomized amounts from BASE_AMOUNTS
+    rows = []
+
+    for i in range(9):
+        randomized_amount = generate_randomized_amount(BASE_AMOUNTS[i])
+        rows.append({
             'currency': currency,
             'bank': bank,
             'time': time_in_description,
             'status': status,
-            'amount': lead_payment_amount,
+            'amount': randomized_amount,
             'account': lead_account_masked,
-        },
-        # Row 2
-        {
-            'currency': currency,
-            'bank': bank,
-            'time': time_in_description,
-            'status': status,
-            'amount': lead_payment_amount,
-            'account': lead_account_masked,
-        },
-        # Row 3
-        {
-            'currency': currency,
-            'bank': bank,
-            'time': time_in_description,
-            'status': status,
-            'amount': lead_payment_amount,
-            'account': lead_account_masked,
-        },
-        # Row 4
-        {
-            'currency': currency,
-            'bank': bank,
-            'time': time_in_description,
-            'status': status,
-            'amount': lead_payment_amount,
-            'account': lead_account_masked,
-        },
-        # Row 5
-        {
-            'currency': currency,
-            'bank': bank,
-            'time': time_in_description,
-            'status': status,
-            'amount': lead_payment_amount,
-            'account': lead_account_masked,
-        },
-        # Row 6
-        {
-            'currency': currency,
-            'bank': bank,
-            'time': time_in_description,
-            'status': status,
-            'amount': lead_payment_amount,
-            'account': lead_account_masked,
-        },
-        # Row 7
-        {
-            'currency': currency,
-            'bank': bank,
-            'time': time_in_description,
-            'status': status,
-            'amount': lead_payment_amount,
-            'account': lead_account_masked,
-        },
-        # Row 8
-        {
-            'currency': currency,
-            'bank': bank,
-            'time': time_in_description,
-            'status': status,
-            'amount': lead_payment_amount,
-            'account': lead_account_masked,
-        },
-        # Row 9
-        {
-            'currency': currency,
-            'bank': bank,
-            'time': time_in_description,
-            'status': status,
-            'amount': lead_payment_amount,
-            'account': lead_account_masked,
-        },
+        })
+
+    # Rows 10-11: Use acter payments (не рандомізовані)
+    rows.extend([
         # Row 10
         {
             'currency': currency,
@@ -160,7 +128,7 @@ def render_bybit_fd_successful(
             'amount': acter_payment_2,
             'account': acter_account_2_masked,
         },
-    ]
+    ])
 
     # Render table using optimized renderer
     config = create_bybit_fd_table_config()

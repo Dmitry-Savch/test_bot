@@ -20,19 +20,20 @@ KERNING = 0.8  # Tighter letter spacing
 # TIEMPO_X = 414, NUMERO_CUENTA_X = 940, BANCO_X = 1555, MONTO_X = 2200
 
 # Y positions for 11 rows total
-# Підняті на 500 пікселів вгору (зменшуємо всі Y на 500)
+# Координати виміряно з візуального низу букв, скориговано на baseline
+# Baseline знаходиться приблизно на рівні низу букв без хвостиків
 Y_POSITIONS = [
     640,   # Row 1
-    835,   # Row 2
-    1030,   # Row 3
-    1225,   # Row 4
-    1420,   # Row 5
-    1615,   # Row 6
-    1810,  # Row 7
-    2005,  # Row 8
-    2220,  # Row 9
-    2395,  # Row 10 - first actor row
-    2590,  # Row 11 - second actor row
+    834,   # Row 2
+    1028,   # Row 3
+    1223,   # Row 4
+    1416,   # Row 5
+    1611,   # Row 6
+    1806,  # Row 7
+    1999,  # Row 8
+    2194,  # Row 9
+    2386,  # Row 10 - first actor row
+    2577,  # Row 11 - second actor row
 ]
 
 # X positions for 6 columns (центри колонок для center alignment)

@@ -12,12 +12,12 @@ KERNING = 1.4
 
 # Y positions for 6 rows (vertical positioning)
 Y_POSITIONS = [
-    850, 
-    1010, 
-    1175, 
-    1335, 
-    1500, 
-    1660
+    848, 
+    1013, 
+    1177, 
+    1341, 
+    1505, 
+    1669
 ]
 
 # X positions for columns (horizontal positioning)

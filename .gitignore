@@ -38,4 +38,7 @@ htmlcov/
 
 # OS
 *.swp
-*~          
+*~
+
+# Development tools
+measure_coordinates_interactive.py
