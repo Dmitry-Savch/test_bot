@@ -4,8 +4,8 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 def get_main_selection_keyboard() -> InlineKeyboardMarkup:
     """Main keyboard with all screenshot type options (for /kb command)."""
     keyboard = [
-        [InlineKeyboardButton(text="🏦 Bybit Withdraw", callback_data="select_bybit")],
-        [InlineKeyboardButton(text="✅ Bybit FD (Successful)", callback_data="select_bybit_fd")],
+        [InlineKeyboardButton(text="⬛ BYBIT BLACK", callback_data="select_bybit")],
+        [InlineKeyboardButton(text="⬜ WHITE BYBIT", callback_data="select_bybit_fd")],
         [InlineKeyboardButton(text="💱 MEXC FD", callback_data="select_mexc_fd")],
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)

@@ -20,7 +20,7 @@ router = Router()
 
 def get_currency_keyboard():
     """Create keyboard with currency options."""
-    keyboard = ReplyKeyboardMarkup(
+    return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="ARS"), KeyboardButton(text="COP")],
             [KeyboardButton(text="CLP"), KeyboardButton(text="USD")]
@@ -28,7 +28,6 @@ def get_currency_keyboard():
         resize_keyboard=True,
         one_time_keyboard=True
     )
-    return keyboard
 
 
 @router.callback_query(F.data == "select_mexc_fd")
@@ -101,9 +100,8 @@ async def select_mexc_fd(callback: CallbackQuery, state: FSMContext):
 
     # NORMAL MODE: Original logic
     await callback.message.answer(
-        "💱 <b>MEXC FD - Transaction History</b>\n\n"
-        "Структура: 10 рядків × 6 колонок\n"
-        "Оберіть валюту (заповнить колонку 1, всі 10 рядків):",
+        "💱 <b>MEXC FD</b>\n\n"
+        "Оберіть валюту:",
         reply_markup=get_currency_keyboard(),
         parse_mode="HTML"
     )
@@ -124,7 +122,7 @@ async def process_currency(message: Message, state: FSMContext):
 
     await state.update_data(currency=currency)
     await message.answer(
-        "🏦 Введіть банк ліда (заповнить колонку 2, рядки 1-9)\n"
+        "1/10 🏦 Введіть назву банку ліда:\n"
         "<i>Приклад: Banco Galicia, BBVA, Santander</i>",
         reply_markup=ReplyKeyboardRemove(),
         parse_mode="HTML"
@@ -137,7 +135,7 @@ async def process_lead_bank(message: Message, state: FSMContext):
     """Process lead bank name (fills column 2, rows 1-9)."""
     await state.update_data(lead_bank=message.text.strip())
     await message.answer(
-        "🏦 Введіть банк актера (заповнить колонку 2, рядок 10)\n"
+        "2/10 🏦 Введіть назву банку актера:\n"
         "<i>Приклад: Banco Santander</i>",
         parse_mode="HTML"
     )
@@ -149,7 +147,7 @@ async def process_acter_bank(message: Message, state: FSMContext):
     """Process acter bank name (fills column 2, row 10)."""
     await state.update_data(acter_bank=message.text.strip())
     await message.answer(
-        "📅 Введіть час відправки клієнта (заповнить колонку 3, рядки 1-9)\n"
+        "3/10 📅 Введіть час транзакцій ліда:\n"
         "<i>Приклад: Hace 2 días, Hace una semana</i>",
         parse_mode="HTML"
     )
@@ -161,7 +159,7 @@ async def process_lead_time(message: Message, state: FSMContext):
     """Process lead time (fills column 3, rows 1-9)."""
     await state.update_data(lead_time=message.text.strip())
     await message.answer(
-        "📅 Введіть час відправки актера (заповнить колонку 3, рядок 10)\n"
+        "4/10 📅 Введіть час транзакцій актера:\n"
         "<i>Приклад: Hace 1 día</i>",
         parse_mode="HTML"
     )
@@ -173,7 +171,7 @@ async def process_acter_time(message: Message, state: FSMContext):
     """Process acter time (fills column 3, row 10)."""
     await state.update_data(acter_time=message.text.strip())
     await message.answer(
-        "💰 Введіть суму комісії #1 (заповнить колонку 5, рядки 1, 3, 5)\n"
+        "5/10 💰 Введіть суму комісії #1: \n"
         "<i>Приклад: 500.00</i>",
         parse_mode="HTML"
     )
@@ -185,7 +183,7 @@ async def process_fee_1(message: Message, state: FSMContext):
     """Process fee 1 (fills column 5, rows 1, 3, 5)."""
     await state.update_data(fee_1=message.text.strip())
     await message.answer(
-        "💰 Введіть суму комісії #2 (заповнить колонку 5, рядки 2, 8)\n"
+        "6/10 💰 Введіть суму комісії #2:\n"
         "<i>Приклад: 750.00</i>",
         parse_mode="HTML"
     )
@@ -197,7 +195,7 @@ async def process_fee_2(message: Message, state: FSMContext):
     """Process fee 2 (fills column 5, rows 2, 8)."""
     await state.update_data(fee_2=message.text.strip())
     await message.answer(
-        "💰 Введіть суму комісії #3 (заповнить колонку 5, рядки 4, 6, 7, 9)\n"
+        "7/10 💰 Введіть суму комісії #3 \n"
         "<i>Приклад: 1000.00</i>",
         parse_mode="HTML"
     )
@@ -209,7 +207,7 @@ async def process_fee_3(message: Message, state: FSMContext):
     """Process fee 3 (fills column 5, rows 4, 6, 7, 9)."""
     await state.update_data(fee_3=message.text.strip())
     await message.answer(
-        "💰 Введіть суму комісії #4 (заповнить колонку 5, рядок 10)\n"
+        "8/10 💰 Введіть суму комісії #4 \n"
         "<i>Приклад: 1250.00</i>",
         parse_mode="HTML"
     )
@@ -221,8 +219,9 @@ async def process_fee_4(message: Message, state: FSMContext):
     """Process fee 4 (fills column 5, row 10)."""
     await state.update_data(fee_4=message.text.strip())
     await message.answer(
-        "🔢 Введіть адресу виводу ліда (заповнить колонку 6, рядки 1-9)\n"
-        "<i>Приклад: 3001382195******</i>",
+        "9/10 🔢 Введіть адресу виводу ліда \n"
+        "Без ****, буде додано автоматично\n"
+        "<i>Приклад: 3001382195</i>",
         parse_mode="HTML"
     )
     await state.set_state(MEXCFDStates.waiting_lead_address)
@@ -233,8 +232,9 @@ async def process_lead_address(message: Message, state: FSMContext):
     """Process lead address (fills column 6, rows 1-9)."""
     await state.update_data(lead_address=message.text.strip())
     await message.answer(
-        "🔢 Введіть адресу виводу актера (заповнить колонку 6, рядок 10)\n"
-        "<i>Приклад: 3001234567******</i>",
+        "10/10 🔢 Введіть адресу виводу актера\n"
+        "Без ****, буде додано автоматично\n"
+        "<i>Приклад: 3001234567</i>",
         parse_mode="HTML"
     )
     await state.set_state(MEXCFDStates.waiting_acter_address)
@@ -245,28 +245,11 @@ async def process_acter_address(message: Message, state: FSMContext):
     """Process acter address and generate final screenshot."""
     await state.update_data(acter_address=message.text.strip())
 
-    # Get all collected data
-    data = await state.get_data()
-
-    # Show summary
-    await message.answer(
-        "📊 <b>Зібрані дані:</b>\n\n"
-        f"💱 Валюта: {data['currency']}\n"
-        f"🏦 Банк ліда: {data['lead_bank']}\n"
-        f"🏦 Банк актера: {data['acter_bank']}\n"
-        f"📅 Час ліда: {data['lead_time']}\n"
-        f"📅 Час актера: {data['acter_time']}\n"
-        f"💰 Комісія #1 (рядки 1,3,5): {data['fee_1']}\n"
-        f"💰 Комісія #2 (рядки 2,8): {data['fee_2']}\n"
-        f"💰 Комісія #3 (рядки 4,6,7,9): {data['fee_3']}\n"
-        f"💰 Комісія #4 (рядок 10): {data['fee_4']}\n"
-        f"🔢 Адреса ліда: {data['lead_address']}\n"
-        f"🔢 Адреса актера: {data['acter_address']}\n\n"
-        "⏳ Генерую скріншот...",
-        parse_mode="HTML"
-    )
+    await message.answer("⏳ Генерую скріншот з 10 рядками × 6 колонками...")
 
     try:
+        data = await state.get_data()
+
         # Create output directory if it doesn't exist
         os.makedirs(config.OUTPUT_DIR, exist_ok=True)
         output_path = os.path.join(config.OUTPUT_DIR, f"mexc_fd_{message.from_user.id}.png")

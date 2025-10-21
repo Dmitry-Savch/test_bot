@@ -1,7 +1,7 @@
 """
 Bybit FD (Successful) Handlers
 
-Handles the conversation flow for collecting Bybit FD successful transaction data.
+Handles the conversation flow for collecting Bybit FD transaction data.
 Structure: 11 rows × 6 columns
 Questions are in Ukrainian.
 """
@@ -20,7 +20,7 @@ router = Router()
 
 def get_currency_keyboard():
     """Create keyboard with currency options."""
-    keyboard = ReplyKeyboardMarkup(
+    return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="MXN"), KeyboardButton(text="ARS")],
             [KeyboardButton(text="$"), KeyboardButton(text="CLP")]
@@ -28,7 +28,6 @@ def get_currency_keyboard():
         resize_keyboard=True,
         one_time_keyboard=True
     )
-    return keyboard
 
 
 @router.callback_query(F.data == "select_bybit_fd")
@@ -69,7 +68,7 @@ async def select_bybit_fd(callback: CallbackQuery, state: FSMContext):
             photo = FSInputFile(result_path)
             await callback.message.answer_photo(
                 photo,
-                caption="✅ Скріншот Bybit FD (Successful) готовий! (TEST MODE)\n"
+                caption="✅ Скріншот Bybit FD готовий! (TEST MODE)\n"
                         "11 рядків × 6 колонок заповнено.",
                 reply_markup=get_continue_keyboard()
             )
@@ -84,9 +83,8 @@ async def select_bybit_fd(callback: CallbackQuery, state: FSMContext):
 
     # NORMAL MODE: Original logic
     await callback.message.answer(
-        "🏦 <b>Bybit FD - Successful Transaction</b>\n\n"
-        "Структура: 11 рядків × 6 колонок\n"
-        "Оберіть валюту (заповнить колонку 1, всі 11 рядків):",
+        "🏦 <b>Bybit FD</b>\n\n"
+        "Оберіть валюту:",
         reply_markup=get_currency_keyboard(),
         parse_mode="HTML"
     )
@@ -107,7 +105,7 @@ async def process_currency(message: Message, state: FSMContext):
 
     await state.update_data(currency=currency)
     await message.answer(
-        "🏦 Введіть назву банку (заповнить колонку 2, всі 11 рядків)\n"
+        "1/7 🏦 Введіть назву банку:\n"
         "<i>Приклад: BVVA, Banco Estado, Santander</i>",
         parse_mode="HTML"
     )
@@ -119,7 +117,7 @@ async def process_bank(message: Message, state: FSMContext):
     """Process bank name (fills column 2, all 11 rows)."""
     await state.update_data(bank=message.text.strip())
     await message.answer(
-        "📅 Введіть час транзакцій (заповнить колонку 3, всі 11 рядків)\n"
+        "2/7 📅 Введіть час транзакцій:\n"
         "<i>Приклад: Hace un año, Hace 2 días, Hace una semana</i>",
         parse_mode="HTML"
     )
@@ -131,7 +129,7 @@ async def process_time(message: Message, state: FSMContext):
     """Process transaction time (fills column 3, all 11 rows)."""
     await state.update_data(time_in_description=message.text.strip())
     await message.answer(
-        "✅ Введіть статус транзакцій (заповнить колонку 4, всі 11 рядків)\n"
+        "3/7 ✅ Введіть статус транзакцій:\n"
         "<i>Приклад: Pagado, En proceso, Pendiente</i>",
         parse_mode="HTML"
     )
@@ -143,7 +141,7 @@ async def process_status(message: Message, state: FSMContext):
     """Process transaction status (fills column 4, all 11 rows)."""
     await state.update_data(status=message.text.strip())
     await message.answer(
-        "💰 Введіть ОПЛАТА ЛІДА (заповнить колонку 5, перші 9 рядків)\n"
+        "4/7 💰 Введіть ОПЛАТА ЛІДА:\n"
         "<i>Одне значення, яке з'явиться 9 разів. Приклад: 489.000</i>",
         parse_mode="HTML"
     )
@@ -155,7 +153,7 @@ async def process_lead_payment_amount(message: Message, state: FSMContext):
     """Process lead payment amount (fills column 5, rows 1-9)."""
     await state.update_data(lead_payment_amount=message.text.strip())
     await message.answer(
-        "💰 Введіть ОПЛАТА АКТЕРА #1 (колонка 5, рядок 10)\n"
+        "5/7 💰 Введіть ОПЛАТА АКТЕРА #1 (колонка 5, рядок 10)\n"
         "<i>Приклад: 29.320.120</i>",
         parse_mode="HTML"
     )
@@ -172,7 +170,7 @@ async def process_acter_payment_1(message: Message, state: FSMContext):
         acter_payment_2=acter_payment
     )
     await message.answer(
-        "🔢 Введіть НОМЕР АККА ЛІДА (заповнить колонку 6, перші 9 рядків)\n"
+        "6/7 🔢 Введіть НОМЕР АККА ЛІДА\n"
         "Одне значення без ****, з'явиться 9 разів\n"
         "<i>Приклад: 3001382195</i>",
         parse_mode="HTML"
@@ -185,7 +183,7 @@ async def process_lead_account_number(message: Message, state: FSMContext):
     """Process lead account number (fills column 6, rows 1-9)."""
     await state.update_data(lead_account_number=message.text.strip())
     await message.answer(
-        "🔢 Введіть НОМЕР АККА АКТЕРА (колонка 6, рядки 10 та 11)\n"
+        "7/7 🔢 Введіть НОМЕР АККА АКТЕРА (колонка 6, рядки 10 та 11)\n"
         "Одне значення для обох рядків, без ****\n"
         "<i>Приклад: 8805356635</i>",
         parse_mode="HTML"

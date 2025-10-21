@@ -19,7 +19,7 @@ router = Router()
 
 def get_currency_keyboard():
     """Create keyboard with currency options."""
-    keyboard = ReplyKeyboardMarkup(
+    return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="MXN"), KeyboardButton(text="ARS")],
             [KeyboardButton(text="$"), KeyboardButton(text="CLP")]
@@ -27,7 +27,6 @@ def get_currency_keyboard():
         resize_keyboard=True,
         one_time_keyboard=True
     )
-    return keyboard
 
 
 @router.callback_query(F.data == "select_bybit")
@@ -102,7 +101,7 @@ async def select_bybit_withdraw(callback: CallbackQuery, state: FSMContext):
 
     # NORMAL MODE: Original logic
     await callback.message.answer(
-        "🏦 <b>Bybit - Історія транзакцій</b>\n\n"
+        "🏦 <b>Bybit</b>\n\n"
         "Оберіть валюту:",
         reply_markup=get_currency_keyboard(),
         parse_mode="HTML"
@@ -124,7 +123,7 @@ async def process_currency(message: Message, state: FSMContext):
 
     await state.update_data(currency=currency)
     await message.answer(
-        "📅 Введіть час транзакцій\n"
+        "1/8 📅 Введіть час транзакцій\n"
         "<i>Приклад: Hace un mes, Hace 2 días, Hace una semana</i>",
         parse_mode="HTML"
     )
@@ -136,7 +135,7 @@ async def process_time(message: Message, state: FSMContext):
     """Process transaction time (step 2/9)."""
     await state.update_data(time_in_description=message.text.strip())
     await message.answer(
-        "🏦 Введіть назву банку\n"
+        "2/8 🏦 Введіть назву банку\n"
         "<i>Приклад: Falabella, Banco Estado, Santander</i>",
         parse_mode="HTML"
     )
@@ -148,7 +147,8 @@ async def process_bank(message: Message, state: FSMContext):
     """Process bank name (step 3/9)."""
     await state.update_data(lead_bank=message.text.strip())
     await message.answer(
-        "🔢 Введіть номер рахунку Ліда (без ****)\n"
+        "3/8 🔢 Введіть номер рахунку Ліда\n"
+        "Без ****, буде додано автоматично\n"
         "<i>Приклад: 1999659</i>",
         parse_mode="HTML"
     )
@@ -160,7 +160,8 @@ async def process_lead_number(message: Message, state: FSMContext):
     """Process lead account number (step 4/9)."""
     await state.update_data(lead_number=message.text.strip())
     await message.answer(
-        "🔢 Введіть номер рахунку Персонажа (без ****)\n"
+        "4/8 🔢 Введіть номер рахунку Персонажа\n"
+        "Без ****, буде додано автоматично\n"
         "<i>Приклад: 1509208</i>",
         parse_mode="HTML"
     )
@@ -172,8 +173,8 @@ async def process_persa_number(message: Message, state: FSMContext):
     """Process persa account number (step 5/9)."""
     await state.update_data(persa_number=message.text.strip())
     await message.answer(
-        "💰 Введіть суму Транзакції Ліда 10\n"
-        "<i>З'явиться в рядках 1 і 3. Приклад: 488.323</i>",
+        "5/8 💰 Введіть суму Транзакції Ліда\n"
+        "<i>Приклад: 488.323</i>",
         parse_mode="HTML"
     )
     await state.set_state(BybitWithdrawStates.waiting_transaction_lead_10)
@@ -184,8 +185,8 @@ async def process_transaction_lead_10(message: Message, state: FSMContext):
     """Process transaction lead 10 amount (step 6/9)."""
     await state.update_data(transaction_lead_10=message.text.strip())
     await message.answer(
-        "💰 Введіть суму Транзакції Ліда\n"
-        "<i>З'явиться в рядках 2 і 4. Приклад: 241.579</i>",
+        "6/8 💰 Введіть суму Транзакції Ліда\n"
+        "<i>Приклад: 241.579</i>",
         parse_mode="HTML"
     )
     await state.set_state(BybitWithdrawStates.waiting_transaction_lead_main)
@@ -196,8 +197,8 @@ async def process_transaction_lead_main(message: Message, state: FSMContext):
     """Process transaction lead main amount (step 7/9)."""
     await state.update_data(transaction_lead_main=message.text.strip())
     await message.answer(
-        "💰 Введіть суму Транзакції Ліда 11\n"
-        "<i>З'явиться в рядку 5. Приклад: 620.000</i>",
+        "7/8 💰 Введіть суму Транзакції Ліда 11\n"
+        "<i>Приклад: 620.000</i>",
         parse_mode="HTML"
     )
     await state.set_state(BybitWithdrawStates.waiting_transaction_lead_11)
@@ -208,8 +209,8 @@ async def process_transaction_lead_11(message: Message, state: FSMContext):
     """Process transaction lead 11 amount (step 8/9)."""
     await state.update_data(transaction_lead_11=message.text.strip())
     await message.answer(
-        "💰 Введіть загальну суму виплати\n"
-        "<i>З'явиться в рядку 6. Приклад: 4.911.820</i>",
+        "8/8 💰 Введіть загальну суму виплати\n"
+        "<i>Приклад: 4.911.820</i>",
         parse_mode="HTML"
     )
     await state.set_state(BybitWithdrawStates.waiting_total_payout)
@@ -220,7 +221,7 @@ async def process_total_payout(message: Message, state: FSMContext):
     """Process total payout amount (step 9/9) and generate screenshot."""
     await state.update_data(total_payout=message.text.strip())
 
-    await message.answer("⏳ Генерую скріншот...")
+    await message.answer("⏳ Генерую скріншот з 6 рядками × 4 колонками...")
 
     try:
         data = await state.get_data()
