@@ -52,19 +52,19 @@ async def select_bybit_withdraw(callback: CallbackQuery, state: FSMContext):
             currency = data["currency"]
             currency_config = {
                 "MXN": {
-                    "template": "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                    "template": "templates/bybit/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
                     "suffix": " MXN"
                 },
                 "ARS": {
-                    "template": "templates/DU_ARS_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                    "template": "templates/bybit/DU_ARS_BLACK_BYBIT_WITHDRAW_HISTORY.png",
                     "suffix": " ARS"
                 },
                 "$": {
-                    "template": "templates/SH_USD_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                    "template": "templates/bybit/SH_USD_BLACK_BYBIT_WITHDRAW_HISTORY.png",
                     "suffix": " $"
                 },
                 "CLP": {
-                    "template": "templates/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                    "template": "templates/bybit/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png",
                     "suffix": " CLP"
                 }
             }
@@ -234,19 +234,19 @@ async def process_total_payout(message: Message, state: FSMContext):
         # Map currency to template and suffix
         currency_config = {
             "MXN": {
-                "template": "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                "template": "templates/bybit/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
                 "suffix": " MXN"
             },
             "ARS": {
-                "template": "templates/DU_ARS_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                "template": "templates/bybit/DU_ARS_BLACK_BYBIT_WITHDRAW_HISTORY.png",
                 "suffix": " ARS"
             },
             "$": {
-                "template": "templates/SH_USD_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                "template": "templates/bybit/SH_USD_BLACK_BYBIT_WITHDRAW_HISTORY.png",
                 "suffix": " $"
             },
             "CLP": {
-                "template": "templates/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+                "template": "templates/bybit/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png",
                 "suffix": " CLP"
             }
         }
@@ -286,7 +286,7 @@ async def process_total_payout(message: Message, state: FSMContext):
     except FileNotFoundError as e:
         await message.answer(
             f"❌ Шаблон не знайдено: {str(e)}\n"
-            f"Будь ласка, переконайтеся, що існує templates/bybit_{currency.lower()}_withdraw_history.png"
+            f"Будь ласка, переконайтеся, що існує templates/bybit/*_{currency}_*_WITHDRAW_HISTORY.png"
         )
         await state.clear()
     except Exception as e:

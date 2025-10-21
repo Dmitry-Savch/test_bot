@@ -62,7 +62,7 @@ async def select_bybit_fd(callback: CallbackQuery, state: FSMContext):
                 lead_account_number=data["lead_account_number"],
                 acter_account_1=data["acter_account_1"],
                 acter_account_2=data["acter_account_2"],
-                template_path="templates/SM_MXN_WHITE_BYBITFD_WITHDRAW_HISTORY.png",
+                template_path="templates/bybit_fd/SM_MXN_WHITE_BYBITFD_WITHDRAW_HISTORY.png",
                 output_path=output_path
             )
 
@@ -221,7 +221,7 @@ async def process_acter_account(message: Message, state: FSMContext):
             lead_account_number=data["lead_account_number"],
             acter_account_1=data["acter_account"],
             acter_account_2=data["acter_account"],
-            template_path="templates/successful.png",
+            template_path="templates/bybit_fd/successful.png",
             output_path=output_path
         )
 
@@ -239,7 +239,7 @@ async def process_acter_account(message: Message, state: FSMContext):
     except FileNotFoundError as e:
         await message.answer(
             f"❌ Шаблон не знайдено: {str(e)}\n"
-            f"Будь ласка, переконайтеся, що існує templates/SM_MXN_WHITE_BYBITFD_WITHDRAW_HISTORY.png"
+            f"Будь ласка, переконайтеся, що існує templates/bybit_fd/SM_MXN_WHITE_BYBITFD_WITHDRAW_HISTORY.png"
         )
         await state.clear()
     except Exception as e:

@@ -46,11 +46,11 @@ def render_bybit_withdraw_history(
 
     Examples:
         # For MXN
-        render_bybit_withdraw_history(..., currency=" MXN", template_path="templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png")
+        render_bybit_withdraw_history(..., currency=" MXN", template_path="templates/bybit/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png")
         # Output: output/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY_RESULT.png
 
         # For CLP
-        render_bybit_withdraw_history(..., currency=" CLP", template_path="templates/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png")
+        render_bybit_withdraw_history(..., currency=" CLP", template_path="templates/bybit/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png")
         # Output: output/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY_RESULT.png
     """
     # Generate output path from template path if not provided

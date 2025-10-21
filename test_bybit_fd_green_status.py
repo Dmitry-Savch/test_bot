@@ -15,7 +15,7 @@ result = render_bybit_fd_successful(
     lead_account_number="1234",
     acter_account_1="5678",
     acter_account_2="9012",
-    template_path="templates/successful.png",
+    template_path="templates/bybit_fd/successful.png",
     output_path="output/test_bybit_fd_green_status.png"
 )
 

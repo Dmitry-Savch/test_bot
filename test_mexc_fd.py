@@ -16,7 +16,7 @@ result = render_mexc_fd(
     fee_4="1250.00",     # Row 10
     lead_address="3001382195******",
     acter_address="3001234567******",
-    template_path="templates/SR_ARS_MEXCFD_WITHDRAW_HISTORY.png",
+    template_path="templates/mexc_fd/SR_ARS_MEXCFD_WITHDRAW_HISTORY.png",
     output_path="output/test_mexc_fd.png"
 )
 

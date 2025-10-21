@@ -5,10 +5,10 @@ from _modifiers_photo.bybit_withdraw import render_bybit_withdraw_history
 
 # Test data
 test_templates = [
-    "templates/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
-    "templates/DU_ARS_BLACK_BYBIT_WITHDRAW_HISTORY.png",
-    "templates/SH_USD_BLACK_BYBIT_WITHDRAW_HISTORY.png",
-    "templates/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+    "templates/bybit/SD_MXN_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+    "templates/bybit/DU_ARS_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+    "templates/bybit/SH_USD_BLACK_BYBIT_WITHDRAW_HISTORY.png",
+    "templates/bybit/DU_CLP_BLACK_BYBIT_WITHDRAW_HISTORY.png",
 ]
 
 expected_outputs = [

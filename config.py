@@ -41,8 +41,9 @@ BYBIT_FD_TEST_DATA = {
 }
 
 # Test data for MEXC FD
+# Supported currencies: CLP, COP, ARS, USD
 MEXC_FD_TEST_DATA = {
-    "currency": "ARS",
+    "currency": "ARS",  # Available: CLP, COP, ARS, USD
     "lead_bank": "Banco Galicia",
     "acter_bank": "Banco Santander",
     "lead_time": "Hace 2 días",

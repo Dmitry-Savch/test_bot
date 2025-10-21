@@ -260,14 +260,14 @@ class CoordinateMeasurer:
 
 
 def main():
-    template_path = "templates/successful.png"
+    template_path = "templates/bybit_fd/successful.png"
 
     try:
         measurer = CoordinateMeasurer(template_path)
         measurer.run()
     except FileNotFoundError as e:
         print(f"\n❌ Помилка: {e}")
-        print("Переконайтеся, що файл templates/Group 1312320191.png існує.")
+        print("Переконайтеся, що файл templates/bybit_fd/successful.png існує.")
     except Exception as e:
         print(f"\n❌ Несподівана помилка: {e}")
         import traceback

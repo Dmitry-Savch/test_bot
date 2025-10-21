@@ -21,7 +21,7 @@ def render_mexc_fd(
     fee_4: str,
     lead_address: str,
     acter_address: str,
-    template_path: str = "templates/SR_ARS_MEXCFD_WITHDRAW_HISTORY.png",
+    template_path: str = "templates/mexc_fd/SR_ARS_MEXCFD_WITHDRAW_HISTORY.png",
     output_path: str = "output/SR_ARS_MEXCFD_WITHDRAW_HISTORY_RESULT.png"
 ) -> str:
     """

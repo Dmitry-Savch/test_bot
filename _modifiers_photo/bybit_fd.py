@@ -54,7 +54,7 @@ def render_bybit_fd_successful(
     lead_account_number: str,
     acter_account_1: str,
     acter_account_2: str,
-    template_path: str = "templates/SM_MXN_WHITE_BYBITFD_WITHDRAW_HISTORY.png",
+    template_path: str = "templates/bybit_fd/SM_MXN_WHITE_BYBITFD_WITHDRAW_HISTORY.png",
     output_path: str = "output/SM_MXN_WHITE_BYBITFD_WITHDRAW_HISTORY_RESULT.png"
 ) -> str:
     """

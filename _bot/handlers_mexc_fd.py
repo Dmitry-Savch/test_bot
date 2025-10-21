@@ -22,7 +22,7 @@ def get_currency_keyboard():
     """Create keyboard with currency options."""
     keyboard = ReplyKeyboardMarkup(
         keyboard=[
-            [KeyboardButton(text="ARS"), KeyboardButton(text="MXN")],
+            [KeyboardButton(text="ARS"), KeyboardButton(text="COP")],
             [KeyboardButton(text="CLP"), KeyboardButton(text="USD")]
         ],
         resize_keyboard=True,
@@ -51,6 +51,22 @@ async def select_mexc_fd(callback: CallbackQuery, state: FSMContext):
             os.makedirs(config.OUTPUT_DIR, exist_ok=True)
             output_path = os.path.join(config.OUTPUT_DIR, f"mexc_fd_{callback.from_user.id}.png")
 
+            # Map currency to template filename
+            currency = data["currency"]
+            currency_template_map = {
+                "CLP": "templates/mexc_fd/SD_CLP_MEXCFD_WITHDRAW_HISTORY.png",
+                "COP": "templates/mexc_fd/SH_COP_MEXCFD_WITHDRAW_HISTORY.png",
+                "ARS": "templates/mexc_fd/SR_ARS_MEXCFD_WITHDRAW_HISTORY.png",
+                "USD": "templates/mexc_fd/SR_USD_MEXCFD_WITHDRAW_HISTORY.png"
+            }
+
+            if currency not in currency_template_map:
+                await callback.message.answer(f"❌ Валюта {currency} не підтримується для MEXC FD")
+                await state.clear()
+                return
+
+            template_path = currency_template_map[currency]
+
             result_path = render_mexc_fd(
                 currency=data["currency"],
                 lead_bank=data["lead_bank"],
@@ -63,7 +79,7 @@ async def select_mexc_fd(callback: CallbackQuery, state: FSMContext):
                 fee_4=data["fee_4"],
                 lead_address=data["lead_address"],
                 acter_address=data["acter_address"],
-                template_path=f"templates/SR_{data['currency']}_MEXCFD_WITHDRAW_HISTORY.png",
+                template_path=template_path,
                 output_path=output_path
             )
 
@@ -99,9 +115,9 @@ async def process_currency(message: Message, state: FSMContext):
     """Process currency selection (fills column 1, all 10 rows)."""
     currency = message.text.strip().upper()
 
-    if currency not in ["ARS", "MXN", "CLP", "USD"]:
+    if currency not in ["ARS", "COP", "CLP", "USD"]:
         await message.answer(
-            "❌ Невірна валюта. Будь ласка, оберіть: ARS, MXN, CLP або USD",
+            "❌ Невірна валюта. Будь ласка, оберіть: ARS, COP, CLP або USD",
             reply_markup=get_currency_keyboard()
         )
         return
@@ -255,6 +271,26 @@ async def process_acter_address(message: Message, state: FSMContext):
         os.makedirs(config.OUTPUT_DIR, exist_ok=True)
         output_path = os.path.join(config.OUTPUT_DIR, f"mexc_fd_{message.from_user.id}.png")
 
+        # Map currency to template filename
+        currency = data["currency"]
+        currency_template_map = {
+            "CLP": "templates/mexc_fd/SD_CLP_MEXCFD_WITHDRAW_HISTORY.png",
+            "COP": "templates/mexc_fd/SH_COP_MEXCFD_WITHDRAW_HISTORY.png",
+            "ARS": "templates/mexc_fd/SR_ARS_MEXCFD_WITHDRAW_HISTORY.png",
+            "USD": "templates/mexc_fd/SR_USD_MEXCFD_WITHDRAW_HISTORY.png"
+        }
+
+        if currency not in currency_template_map:
+            await message.answer(
+                f"❌ Валюта {currency} не підтримується для MEXC FD\n"
+                f"Доступні валюти: CLP, COP, ARS, USD",
+                reply_markup=get_continue_keyboard()
+            )
+            await state.clear()
+            return
+
+        template_path = currency_template_map[currency]
+
         # Generate screenshot
         result_path = render_mexc_fd(
             currency=data["currency"],
@@ -268,7 +304,7 @@ async def process_acter_address(message: Message, state: FSMContext):
             fee_4=data["fee_4"],
             lead_address=data["lead_address"],
             acter_address=data["acter_address"],
-            template_path=f"templates/SR_{data['currency']}_MEXCFD_WITHDRAW_HISTORY.png",
+            template_path=template_path,
             output_path=output_path
         )
 
