@@ -87,7 +87,7 @@ def execute(
     text: str,
     position: Point,
     alignment: Literal['left', 'right', 'center'] = 'left',
-    font_family: str = 'fonts/semibold.woff2',
+    font_family: str = 'fonts/BlinkMacSystemFont-Regular.otf',
     text_color: Union[Tuple[int,int,int], Tuple[int,int,int,int]] = (55, 55, 55),
     kerning: float = 1.0,
     y_limit: Optional[int] = None,
@@ -172,7 +172,7 @@ def draw_text_with_kerning(
     font_size: int,
     text: str,
     position: Tuple[int, int],
-    font_family: str = "fonts/OpenSans-Semibold.ttf",
+    font_family: str = "fonts/BlinkMacSystemFont-Regular.otf",
     text_color: Tuple[int, int, int] = (255, 255, 255),
     alignment: Literal['left', 'right', 'center'] = 'left',
     kerning: float = 1.4
@@ -220,7 +220,7 @@ def execute_centered_between(
     x1: int,
     x2: int,
     y: int,  # baseline Y
-    font_family: str = 'fonts/semibold.woff2',
+    font_family: str = 'fonts/BlinkMacSystemFont-Regular.otf',
     text_color: Union[Tuple[int,int,int], Tuple[int,int,int,int]] = (55, 55, 55),
     kerning: float = 1.0,  # extra tracking in px
     y_limit: Optional[int] = None,

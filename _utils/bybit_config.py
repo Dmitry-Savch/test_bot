@@ -5,7 +5,7 @@ All coordinates are for templates at 3360 x 2100 px.
 """
 
 # Font settings
-FONT_FAMILY = "fonts/OpenSans-Semibold.ttf"
+FONT_FAMILY = "fonts/BlinkMacSystemFont-Regular.otf"
 FONT_SIZE = 53
 TEXT_COLOR = (255, 255, 255)  # White
 KERNING = 1.4

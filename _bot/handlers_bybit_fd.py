@@ -12,7 +12,7 @@ from aiogram.fsm.context import FSMContext
 
 from _bot.keyboards import get_continue_keyboard
 from _bot.states import BybitFDStates
-from _modifiers_photo.bybit_fd import render_bybit_fd_successful
+from _modifiers_photo.white_bybitfd_withdraw_history import render_bybit_fd_successful
 import config
 
 router = Router()

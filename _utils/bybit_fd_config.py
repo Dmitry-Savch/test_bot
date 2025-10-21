@@ -6,7 +6,7 @@ This is for the "successful.png" template.
 """
 
 # Font settings
-FONT_FAMILY = "fonts/OpenSans-Semibold.ttf"
+FONT_FAMILY = "fonts/BlinkMacSystemFont-Regular.otf"
 FONT_SIZE = 37  # Reduced font size for better fit
 TEXT_COLOR = (0, 0, 0)  # Black text
 STATUS_COLOR = (11, 185, 115)  # Green color for status column (#0BB973)

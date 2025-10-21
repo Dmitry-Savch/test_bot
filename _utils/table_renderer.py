@@ -173,10 +173,10 @@ def create_mexc_fd_table_config() -> TableConfig:
         kerning=mexc_fd_config.KERNING,
         y_positions=mexc_fd_config.Y_POSITIONS,
         columns={
-            'currency': ColumnConfig(x_position=mexc_fd_config.CRIPTO_X, alignment='center'),
-            'bank': ColumnConfig(x_position=mexc_fd_config.BANCO_X, alignment='center'),
-            'time': ColumnConfig(x_position=mexc_fd_config.TIEMPO_X, alignment='center'),
-            'fee': ColumnConfig(x_position=mexc_fd_config.MONTO_X, alignment='center'),
-            'address': ColumnConfig(x_position=mexc_fd_config.DIRECCION_X, alignment='center'),
+            'currency': ColumnConfig(x_position=mexc_fd_config.CRIPTO_X, alignment='left'),
+            'bank': ColumnConfig(x_position=mexc_fd_config.BANCO_X, alignment='left'),
+            'time': ColumnConfig(x_position=mexc_fd_config.TIEMPO_X, alignment='left'),
+            'fee': ColumnConfig(x_position=mexc_fd_config.MONTO_X, alignment='left'),
+            'address': ColumnConfig(x_position=mexc_fd_config.DIRECCION_X, alignment='left'),
         }
     )

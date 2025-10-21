@@ -12,8 +12,8 @@ Structure: 10 rows × 5 columns
 """
 
 # Font settings
-FONT_FAMILY = "fonts/OpenSans-Semibold.ttf"
-FONT_SIZE = 30  # Smaller font for MEXC interface
+FONT_FAMILY = "fonts/BlinkMacSystemFont-Regular.otf"
+FONT_SIZE = 31  # Smaller font for MEXC interface
 TEXT_COLOR = (255, 255, 255)  # White text on dark background
 STATUS_COLOR = (0, 255, 163)  # Green color for "Retiro Exitoso" (#00FFA3)
 REPOSITION_COLOR = (0, 255, 163)  # Green color for "Reposición"
@@ -35,11 +35,11 @@ Y_POSITIONS = [
     2575,   # Row 10
 ]
 
-# X positions for 5 columns (center alignment)
-CRIPTO_X = 737       # "Cripto" (Currency) column - center
-BANCO_X = 1036        # "Banco" (Bank) column - center
-TIEMPO_X = 1414       # "Tiempo" (Time) column - center
-MONTO_X = 2527        # "Monto" (Amount/Fee) column - center
-DIRECCION_X = 2925   # "Dirección de Retiro" (Address) column - center
+# X positions for 5 columns (left alignment)
+CRIPTO_X = 695       # "Cripto" (Currency) column - left
+BANCO_X = 996        # "Banco" (Bank) column - left
+TIEMPO_X = 1305       # "Tiempo" (Time) column - left
+MONTO_X = 2480        # "Monto" (Amount/Fee) column - left
+DIRECCION_X = 2800   # "Dirección de Retiro" (Address) column - left
 
 # Note: Row 10 typically has "Reposición" status and different data sources

@@ -11,7 +11,7 @@ from aiogram.fsm.context import FSMContext
 
 from _bot.keyboards import get_continue_keyboard
 from _bot.states import BybitWithdrawStates
-from _modifiers_photo.bybit_withdraw import render_bybit_withdraw_history
+from _modifiers_photo.black_bybit_withdraw_history import render_bybit_withdraw_history
 import config
 
 router = Router()

@@ -12,7 +12,7 @@ from aiogram.fsm.context import FSMContext
 
 from _bot.keyboards import get_continue_keyboard
 from _bot.states import MEXCFDStates
-from _modifiers_photo.mexc_fd import render_mexc_fd
+from _modifiers_photo.mexcfd_withdraw_history import render_mexc_fd
 import config
 
 router = Router()

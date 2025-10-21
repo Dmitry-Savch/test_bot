@@ -260,7 +260,7 @@ class CoordinateMeasurer:
 
 
 def main():
-    template_path = "templates/bybit_fd/successful.png"
+    template_path = "templates/successful.png"
 
     try:
         measurer = CoordinateMeasurer(template_path)

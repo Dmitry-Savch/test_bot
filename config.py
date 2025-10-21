@@ -8,6 +8,55 @@ TEMPLATE_PATH = "templates/sat_form.png"
 OUTPUT_DIR = "output"
 FONTS_DIR = "fonts"
 
+# Actor names mapping by currency and platform
+# Format: "{CURRENCY}_{PLATFORM}_BOTS": "Actor Name"
+ACTOR_NAMES = {
+    # Standard Bybit (Black theme)
+    "ECU_BYBIT_BOTS": "Sebastian Hernandez",
+    "ARS_BYBIT_BOTS": "Diego Ugarte",
+    "MXN_BYBIT_BOTS": "Santiago Diaz",
+    "CLP_BYBIT_BOTS": "Sebastian Hernandez",
+    "VED_BYBIT_BOTS": "Sebastian Hernandez",
+    "COP_BYBIT_BOTS": "Sebastian Ramos",
+
+    # MEXC
+    "COP_MEXC_BOTS": "Santiago Sánchez",
+    "MXN_MEXC_BOTS": "Sebastian Martines",
+    "ARS_MEXC_BOTS": "Héctor Lopez",
+    "ECU_MEXC_BOTS": "Santiago Ramos",
+    "CLP_MEXC_BOTS": "Santiago Diaz",
+    "VED_MEXC_BOTS": "Santiago Ramos",
+    "SOL_MEXC_BOTS": "Santiago Diaz",
+
+    # Bybit FD (White theme)
+    "ECU_WHITE_BYBIT_BOTS": "Diego Martines",
+    "ARS_WHITE_BYBIT_BOTS": "Santiago Hernandez",
+    "MXN_WHITE_BYBIT_BOTS": "Diego Hernandez",
+    "COP_WHITE_BYBIT_BOTS": "Diego Martines",
+}
+
+
+def get_actor_name(currency: str, platform: str) -> str:
+    """
+    Get actor name based on currency and platform.
+
+    Args:
+        currency: Currency code (e.g., "MXN", "ARS", "CLP")
+        platform: Platform identifier (e.g., "BYBIT_BOTS", "MEXC_BOTS", "WHITE_BYBIT_BOTS")
+
+    Returns:
+        Actor name or "Unknown Actor" if not found
+
+    Examples:
+        >>> get_actor_name("MXN", "BYBIT_BOTS")
+        'Santiago Diaz'
+        >>> get_actor_name("ARS", "MEXC_BOTS")
+        'Héctor Lopez'
+    """
+    key = f"{currency}_{platform}"
+    return ACTOR_NAMES.get(key, "Unknown Actor")
+
+
 # Test mode for auto-filling form data during coordinate testing
 # Set TEST_MODE=true in environment or uncomment the line below
 TEST_MODE = os.getenv("TEST_MODE", "false").lower() == "true"
